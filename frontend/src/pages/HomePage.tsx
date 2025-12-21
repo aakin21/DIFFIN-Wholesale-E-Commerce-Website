@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../utils/api';
+import api, { BASE_URL } from '../utils/api';
 import { Category, Product } from '../types';
 
 const HomePage: React.FC = () => {
@@ -126,7 +126,7 @@ const HomePage: React.FC = () => {
                               marginBottom: '12px'
                             }}>
                               <img
-                                src={`http://localhost:5000${item.imageUrl}`}
+                                src={`${BASE_URL}${item.imageUrl}`}
                                 alt={`${item.modelName} - ${item.colorName}`}
                                 style={{
                                   width: '100%',

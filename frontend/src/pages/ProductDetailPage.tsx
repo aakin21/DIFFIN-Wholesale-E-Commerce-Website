@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import api from '../utils/api';
+import api, { BASE_URL } from '../utils/api';
 import { Product, ColorVariant } from '../types';
 import { useCart } from '../contexts/CartContext';
 
@@ -80,7 +80,7 @@ const ProductDetailPage: React.FC = () => {
             <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200">
               {selectedColor && selectedColor.imageUrl ? (
                 <img
-                  src={`http://localhost:5000${selectedColor.imageUrl}`}
+                  src={`${BASE_URL}${selectedColor.imageUrl}`}
                   alt={selectedColor.colorName}
                   className="w-full h-full object-cover"
                 />
@@ -135,7 +135,7 @@ const ProductDetailPage: React.FC = () => {
                           <div className="aspect-square bg-gray-100">
                             {color.imageUrl ? (
                               <img
-                                src={`http://localhost:5000${color.imageUrl}`}
+                                src={`${BASE_URL}${color.imageUrl}`}
                                 alt={color.colorName}
                                 className="w-full h-full object-cover"
                               />

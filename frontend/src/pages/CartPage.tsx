@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
-import api from '../utils/api';
+import api, { BASE_URL } from '../utils/api';
 import { OrderFormData } from '../types';
 
 const CartPage: React.FC = () => {
@@ -109,7 +109,7 @@ const CartPage: React.FC = () => {
                   <div className="w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl overflow-hidden flex-shrink-0">
                     {item.colorImage ? (
                       <img
-                        src={`http://localhost:5000${item.colorImage}`}
+                        src={`${BASE_URL}${item.colorImage}`}
                         alt={item.colorName}
                         className="w-full h-full object-cover"
                       />

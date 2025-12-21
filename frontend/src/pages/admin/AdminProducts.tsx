@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../../utils/api';
+import api, { BASE_URL } from '../../utils/api';
 import { Product, Category, ColorVariant } from '../../types';
 
 const AdminProducts: React.FC = () => {
@@ -572,7 +572,7 @@ const AdminProducts: React.FC = () => {
                 <div style={{aspectRatio: '1/1', backgroundColor: '#f3f4f6'}}>
                   {product.colors.length > 0 && product.colors[0].imageUrl ? (
                     <img
-                      src={`http://localhost:5000${product.colors[0].imageUrl}`}
+                      src={`${BASE_URL}${product.colors[0].imageUrl}`}
                       alt={product.modelName}
                       style={{width: '100%', height: '100%', objectFit: 'cover'}}
                     />
