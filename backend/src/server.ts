@@ -36,7 +36,11 @@ app.get('/api/health', (req, res) => {
 
 // Connect to database and start server
 connectDB().then(() => {
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   });
+}).catch((error) => {
+  console.error('Failed to connect to database:', error);
+  process.exit(1);
 });
