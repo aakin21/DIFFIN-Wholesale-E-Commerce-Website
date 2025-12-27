@@ -7,6 +7,7 @@ const HomePage: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,6 +26,15 @@ const HomePage: React.FC = () => {
     };
 
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Her kategori için öne çıkan ürünü bul (sadece 1 tane)
@@ -47,13 +57,13 @@ const HomePage: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* TOPTAN ÜRÜNLERİMİZ - Beyaz arkaplan */}
-      <section style={{padding: '64px 24px', backgroundColor: '#ffffff'}}>
+      <section style={{padding: isMobile ? '32px 16px' : '64px 24px', backgroundColor: '#ffffff'}}>
         <div style={{maxWidth: '1400px', margin: '0 auto'}}>
           <h2 style={{
-            fontSize: '36px',
+            fontSize: isMobile ? '24px' : '36px',
             fontWeight: '300',
-            letterSpacing: '0.15em',
-            marginBottom: '80px',
+            letterSpacing: isMobile ? '0.1em' : '0.15em',
+            marginBottom: isMobile ? '40px' : '80px',
             textAlign: 'center',
             color: '#000000'
           }}>
@@ -76,8 +86,8 @@ const HomePage: React.FC = () => {
           ) : (
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '64px'
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+              gap: isMobile ? '48px' : '64px'
             }}>
               {categories.map((category) => {
                 const featuredProducts = getFeaturedProductsForCategory(category._id);
@@ -94,9 +104,9 @@ const HomePage: React.FC = () => {
                       }}
                     >
                       <h3 style={{
-                        fontSize: '24px',
+                        fontSize: isMobile ? '20px' : '24px',
                         fontWeight: '300',
-                        letterSpacing: '0.15em',
+                        letterSpacing: isMobile ? '0.1em' : '0.15em',
                         color: '#000000',
                         transition: 'opacity 0.3s'
                       }}
@@ -159,15 +169,15 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* 2 Buton */}
-      <section style={{padding: '64px 24px', backgroundColor: '#f3f4f6'}}>
+      <section style={{padding: isMobile ? '32px 16px' : '64px 24px', backgroundColor: '#f3f4f6'}}>
         <div style={{maxWidth: '1200px', margin: '0 auto'}}>
-          <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px'}}>
+          <div style={{display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px'}}>
             <Link
               to="/create-brand"
               style={{
                 background: 'linear-gradient(to bottom right, #1f2937, #000000)',
                 color: '#ffffff',
-                padding: '64px 40px',
+                padding: isMobile ? '40px 24px' : '64px 40px',
                 textAlign: 'center',
                 border: '1px solid #4b5563',
                 textDecoration: 'none',
@@ -179,7 +189,7 @@ const HomePage: React.FC = () => {
               onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
             >
               <h3 style={{
-                fontSize: '28px',
+                fontSize: isMobile ? '20px' : '28px',
                 fontWeight: '300',
                 letterSpacing: '0.1em',
                 marginBottom: '16px',
@@ -187,7 +197,7 @@ const HomePage: React.FC = () => {
               }}>
                 MARKANIZI OLUŞTURALIM
               </h3>
-              <p style={{fontSize: '14px', color: '#d1d5db'}}>
+              <p style={{fontSize: isMobile ? '13px' : '14px', color: '#d1d5db'}}>
                 Kendi markanızı yaratın, size özel çözümler
               </p>
             </Link>
@@ -197,7 +207,7 @@ const HomePage: React.FC = () => {
               style={{
                 background: 'linear-gradient(to bottom right, #000000, #1f2937)',
                 color: '#ffffff',
-                padding: '64px 40px',
+                padding: isMobile ? '40px 24px' : '64px 40px',
                 textAlign: 'center',
                 border: '1px solid #4b5563',
                 textDecoration: 'none',
@@ -209,7 +219,7 @@ const HomePage: React.FC = () => {
               onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
             >
               <h3 style={{
-                fontSize: '28px',
+                fontSize: isMobile ? '20px' : '28px',
                 fontWeight: '300',
                 letterSpacing: '0.1em',
                 marginBottom: '16px',
@@ -217,7 +227,7 @@ const HomePage: React.FC = () => {
               }}>
                 ÖZEL ÜRÜN ÜRETİMİ
               </h3>
-              <p style={{fontSize: '14px', color: '#d1d5db'}}>
+              <p style={{fontSize: isMobile ? '13px' : '14px', color: '#d1d5db'}}>
                 İstediğiniz ürünü, istediğiniz şekilde
               </p>
             </Link>
@@ -234,47 +244,49 @@ const HomePage: React.FC = () => {
       {/* HAKKIMIZDA VE İLETİŞİM - FULL SİYAH */}
       <section style={{backgroundColor: '#000000', color: '#ffffff'}}>
         {/* HAKKIMIZDA */}
-        <div style={{padding: '80px 24px', borderBottom: '1px solid #2d2d2d'}}>
+        <div style={{padding: isMobile ? '40px 16px' : '80px 24px', borderBottom: '1px solid #2d2d2d'}}>
           <div style={{maxWidth: '1200px', margin: '0 auto'}}>
-            <div style={{display: 'flex', gap: '64px', alignItems: 'center', position: 'relative'}}>
+            <div style={{display: isMobile ? 'block' : 'flex', gap: isMobile ? '0' : '64px', alignItems: 'center', position: 'relative'}}>
               {/* Sol - HAKKIMIZDA */}
-              <div style={{flex: 1, paddingRight: '32px'}}>
-                <h2 style={{fontSize: '30px', fontWeight: '300', letterSpacing: '0.1em', marginBottom: '24px', color: '#ffffff'}}>
+              <div style={{flex: 1, paddingRight: isMobile ? '0' : '32px', marginBottom: isMobile ? '32px' : '0'}}>
+                <h2 style={{fontSize: isMobile ? '24px' : '30px', fontWeight: '300', letterSpacing: '0.1em', marginBottom: '24px', color: '#ffffff'}}>
                   HAKKIMIZDA
                 </h2>
-                <p style={{lineHeight: '1.6', color: '#b0b0b0'}}>
+                <p style={{lineHeight: '1.6', color: '#b0b0b0', fontSize: isMobile ? '14px' : '16px'}}>
                   DIFFIN, en kaliteli ürünleri üretmeyi hedefler. Üretimde en kaliteli hammaddeleri kullanır ve müşteri memnuniyetini ön planda tutar.
                 </p>
               </div>
 
-              {/* Ortada tarz beyaz çizgi */}
-              <div style={{
-                position: 'absolute',
-                left: '50%',
-                top: 0,
-                bottom: 0,
-                width: '2px',
-                background: 'linear-gradient(to bottom, transparent, #ffffff 20%, #ffffff 80%, transparent)',
-                transform: 'translateX(-50%)'
-              }}></div>
+              {/* Ortada tarz beyaz çizgi - Sadece desktop'ta görünsün */}
+              {!isMobile && (
+                <div style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: 0,
+                  bottom: 0,
+                  width: '2px',
+                  background: 'linear-gradient(to bottom, transparent, #ffffff 20%, #ffffff 80%, transparent)',
+                  transform: 'translateX(-50%)'
+                }}></div>
+              )}
 
               {/* Sağ - 4 madde */}
-              <div style={{flex: 1, paddingLeft: '32px'}}>
+              <div style={{flex: 1, paddingLeft: isMobile ? '0' : '32px'}}>
                 <div style={{display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '20px'}}>
                   <span style={{color: '#ffffff', marginTop: '4px'}}>—</span>
-                  <p style={{color: '#b0b0b0', margin: 0}}>Premium Kalite Kumaş</p>
+                  <p style={{color: '#b0b0b0', margin: 0, fontSize: isMobile ? '14px' : '16px'}}>Premium Kalite Kumaş</p>
                 </div>
                 <div style={{display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '20px'}}>
                   <span style={{color: '#ffffff', marginTop: '4px'}}>—</span>
-                  <p style={{color: '#b0b0b0', margin: 0}}>Detaylı Kalite Kontrol</p>
+                  <p style={{color: '#b0b0b0', margin: 0, fontSize: isMobile ? '14px' : '16px'}}>Detaylı Kalite Kontrol</p>
                 </div>
                 <div style={{display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '20px'}}>
                   <span style={{color: '#ffffff', marginTop: '4px'}}>—</span>
-                  <p style={{color: '#b0b0b0', margin: 0}}>Uzun Ömürlü Dikişler</p>
+                  <p style={{color: '#b0b0b0', margin: 0, fontSize: isMobile ? '14px' : '16px'}}>Uzun Ömürlü Dikişler</p>
                 </div>
                 <div style={{display: 'flex', alignItems: 'flex-start', gap: '12px'}}>
                   <span style={{color: '#ffffff', marginTop: '4px'}}>—</span>
-                  <p style={{color: '#b0b0b0', margin: 0}}>Renk Sabitleme Garantisi</p>
+                  <p style={{color: '#b0b0b0', margin: 0, fontSize: isMobile ? '14px' : '16px'}}>Renk Sabitleme Garantisi</p>
                 </div>
               </div>
             </div>
@@ -282,12 +294,12 @@ const HomePage: React.FC = () => {
         </div>
 
         {/* İLETİŞİM */}
-        <div style={{padding: '48px 24px'}}>
+        <div style={{padding: isMobile ? '32px 16px' : '48px 24px'}}>
           <div style={{maxWidth: '1200px', margin: '0 auto', textAlign: 'center'}}>
-            <h3 style={{fontSize: '18px', letterSpacing: '0.1em', marginBottom: '24px', fontWeight: '300', color: '#ffffff'}}>
+            <h3 style={{fontSize: isMobile ? '16px' : '18px', letterSpacing: '0.1em', marginBottom: '24px', fontWeight: '300', color: '#ffffff'}}>
               İLETİŞİM
             </h3>
-            <div style={{display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '14px', alignItems: 'center'}}>
+            <div style={{display: 'flex', flexDirection: 'column', gap: '12px', fontSize: isMobile ? '13px' : '14px', alignItems: 'center'}}>
               <p style={{margin: 0}}>
                 <a href="mailto:info@diffin.com" style={{color: '#b0b0b0', textDecoration: 'none', transition: 'color 0.3s'}} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#b0b0b0'}>
                   info@diffin.com
@@ -298,10 +310,10 @@ const HomePage: React.FC = () => {
                   +90 555 123 4567
                 </a>
               </p>
-              <p style={{fontSize: '12px', color: '#b0b0b0', margin: 0}}>Çalışma Saatleri: 7/24</p>
+              <p style={{fontSize: isMobile ? '11px' : '12px', color: '#b0b0b0', margin: 0}}>Çalışma Saatleri: 7/24</p>
             </div>
             <div style={{borderTop: '1px solid #2d2d2d', marginTop: '32px', paddingTop: '24px'}}>
-              <p style={{fontSize: '12px', color: '#6b7280', margin: 0}}>
+              <p style={{fontSize: isMobile ? '11px' : '12px', color: '#6b7280', margin: 0}}>
                 &copy; {new Date().getFullYear()} DIFFIN. Tüm hakları saklıdır.
               </p>
             </div>

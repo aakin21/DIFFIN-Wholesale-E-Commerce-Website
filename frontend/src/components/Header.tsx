@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 
 const Header: React.FC = () => {
   const { cart } = useCart();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <header style={{
@@ -12,16 +22,16 @@ const Header: React.FC = () => {
       top: 0,
       zIndex: 50
     }}>
-      <div style={{maxWidth: '1400px', margin: '0 auto', padding: '16px 24px'}}>
+      <div style={{maxWidth: '1400px', margin: '0 auto', padding: isMobile ? '12px 16px' : '16px 24px'}}>
         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           {/* Logo - Sol */}
-          <div style={{display: 'flex', alignItems: 'center', gap: '16px'}}>
+          <div style={{display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '16px'}}>
             <Link
               to="/"
               style={{
-                fontSize: '24px',
+                fontSize: isMobile ? '18px' : '24px',
                 fontWeight: '300',
-                letterSpacing: '0.3em',
+                letterSpacing: isMobile ? '0.2em' : '0.3em',
                 color: '#ffffff',
                 textDecoration: 'none',
                 transition: 'opacity 0.3s'
@@ -32,9 +42,9 @@ const Header: React.FC = () => {
               DIFFIN
             </Link>
             <span style={{
-              fontSize: '12px',
+              fontSize: isMobile ? '9px' : '12px',
               fontWeight: '300',
-              letterSpacing: '0.15em',
+              letterSpacing: isMobile ? '0.1em' : '0.15em',
               color: '#b0b0b0'
             }}>
               TOPTAN TEKSTİL
@@ -42,15 +52,15 @@ const Header: React.FC = () => {
           </div>
 
           {/* Hesabım ve Sepet - Sağ */}
-          <div style={{display: 'flex', alignItems: 'center', gap: '20px'}}>
+          <div style={{display: 'flex', alignItems: 'center', gap: isMobile ? '16px' : '20px'}}>
             {/* Sepet */}
             <Link
               to="/cart"
               style={{position: 'relative'}}
             >
               <svg
-                width="28"
-                height="28"
+                width={isMobile ? "24" : "28"}
+                height={isMobile ? "24" : "28"}
                 fill="#ffffff"
                 viewBox="0 0 24 24"
                 style={{transition: 'opacity 0.3s'}}
@@ -86,8 +96,8 @@ const Header: React.FC = () => {
               style={{position: 'relative'}}
             >
               <svg
-                width="28"
-                height="28"
+                width={isMobile ? "24" : "28"}
+                height={isMobile ? "24" : "28"}
                 fill="#ffffff"
                 viewBox="0 0 24 24"
                 style={{transition: 'opacity 0.3s'}}
