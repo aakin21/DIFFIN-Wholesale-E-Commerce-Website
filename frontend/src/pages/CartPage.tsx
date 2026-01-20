@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useCart } from '../contexts/CartContext';
 import api, { BASE_URL } from '../utils/api';
 import { OrderFormData } from '../types';
 
 const CartPage: React.FC = () => {
+  const { t } = useTranslation();
   const { cart, removeFromCart, getTotalAmount, clearCart } = useCart();
   const navigate = useNavigate();
 
@@ -30,7 +32,7 @@ const CartPage: React.FC = () => {
     e.preventDefault();
 
     if (cart.length === 0) {
-      alert('Sepetiniz boş!');
+      alert(t('cart.emptyAlert'));
       return;
     }
 
@@ -58,7 +60,7 @@ const CartPage: React.FC = () => {
       }, 3000);
     } catch (error) {
       console.error('Error creating order:', error);
-      alert('Sipariş oluşturulurken bir hata oluştu!');
+      alert(t('cart.orderError'));
     } finally {
       setLoading(false);
     }
@@ -70,13 +72,13 @@ const CartPage: React.FC = () => {
         <div className="text-center bg-white p-12 rounded-3xl shadow-2xl max-w-md">
           <div className="text-6xl mb-6">✓</div>
           <h2 className="text-3xl font-bold text-black mb-4">
-            Siparişiniz Alındı!
+            {t('cart.orderReceived')}
           </h2>
           <p className="text-gray-600 mb-6">
-            En kısa sürede sizinle iletişime geçeceğiz.
+            {t('cart.willContact')}
           </p>
           <p className="text-sm text-gray-500">
-            Ana sayfaya yönlendiriliyorsunuz...
+            {t('cart.redirecting')}
           </p>
         </div>
       </div>
@@ -87,17 +89,17 @@ const CartPage: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4">
       <div className="container mx-auto max-w-6xl">
         <h1 className="text-4xl md:text-5xl font-bold text-center mb-12 text-black">
-          SEPETİM
+          {t('cart.title')}
         </h1>
 
         {cart.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-2xl text-gray-500 mb-8">Sepetiniz boş</p>
+            <p className="text-2xl text-gray-500 mb-8">{t('cart.empty')}</p>
             <button
               onClick={() => navigate('/')}
               className="bg-black text-white px-8 py-4 rounded-xl font-bold hover:bg-gray-800 transition-all"
             >
-              Alışverişe Başla
+              {t('cart.startShopping')}
             </button>
           </div>
         ) : (
@@ -126,8 +128,8 @@ const CartPage: React.FC = () => {
                     <h3 className="text-xl font-bold text-black mb-1">
                       {item.modelName}
                     </h3>
-                    <p className="text-gray-600 mb-2">Renk: {item.colorName}</p>
-                    <p className="text-gray-600">Seri Sayısı: {item.seriesCount}</p>
+                    <p className="text-gray-600 mb-2">{t('cart.color')}: {item.colorName}</p>
+                    <p className="text-gray-600">{t('cart.seriesCount')}: {item.seriesCount}</p>
                   </div>
 
                   <div className="text-right">
@@ -138,7 +140,7 @@ const CartPage: React.FC = () => {
                       onClick={() => removeFromCart(index)}
                       className="text-red-500 hover:text-red-700 font-medium transition-colors"
                     >
-                      Kaldır
+                      {t('cart.remove')}
                     </button>
                   </div>
                 </div>
@@ -146,7 +148,7 @@ const CartPage: React.FC = () => {
 
               <div className="bg-black text-white rounded-2xl p-6">
                 <div className="flex justify-between items-center text-2xl font-bold">
-                  <span>TOPLAM</span>
+                  <span>{t('cart.total')}</span>
                   <span>{getTotalAmount().toLocaleString('tr-TR')} ₺</span>
                 </div>
               </div>
@@ -154,12 +156,12 @@ const CartPage: React.FC = () => {
 
             {/* Order Form */}
             <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold text-black mb-6">Sipariş Bilgileri</h2>
+              <h2 className="text-2xl font-bold text-black mb-6">{t('cart.orderInfo')}</h2>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    İsim *
+                    {t('cart.firstName')} *
                   </label>
                   <input
                     type="text"
@@ -173,7 +175,7 @@ const CartPage: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Soyisim *
+                    {t('cart.lastName')} *
                   </label>
                   <input
                     type="text"
@@ -187,7 +189,7 @@ const CartPage: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email *
+                    {t('cart.email')} *
                   </label>
                   <input
                     type="email"
@@ -201,7 +203,7 @@ const CartPage: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Telefon *
+                    {t('cart.phone')} *
                   </label>
                   <input
                     type="tel"
@@ -215,7 +217,7 @@ const CartPage: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Adres *
+                    {t('cart.address')} *
                   </label>
                   <textarea
                     name="address"
@@ -232,7 +234,7 @@ const CartPage: React.FC = () => {
                   disabled={loading}
                   className="w-full bg-black text-white py-4 rounded-xl font-bold text-lg hover:bg-gray-800 transition-all transform hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed shadow-lg"
                 >
-                  {loading ? 'İşleniyor...' : 'SİPARİŞ VER'}
+                  {loading ? t('cart.processing') : t('cart.placeOrder')}
                 </button>
               </form>
             </div>

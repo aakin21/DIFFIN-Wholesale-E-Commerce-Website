@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import api, { BASE_URL } from '../utils/api';
 import { Product, Category } from '../types';
 
 const ProductsPage: React.FC = () => {
+  const { t } = useTranslation();
   const { categoryId } = useParams<{ categoryId: string }>();
   const [products, setProducts] = useState<Product[]>([]);
   const [category, setCategory] = useState<Category | null>(null);
@@ -43,17 +45,17 @@ const ProductsPage: React.FC = () => {
       <div className="container mx-auto max-w-7xl">
         <div className="mb-8">
           <Link to="/" className="text-gray-600 hover:text-black transition-colors inline-flex items-center">
-            ← Ana Sayfaya Dön
+            ← {t('products.backToHome')}
           </Link>
         </div>
 
         <h1 className="text-4xl md:text-5xl font-bold text-center mb-12 text-black">
-          {category?.name || 'Ürünler'}
+          {category?.name || t('products.title')}
         </h1>
 
         {products.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-2xl text-gray-500">Bu kategoride henüz ürün bulunmuyor</p>
+            <p className="text-2xl text-gray-500">{t('products.noProducts')}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -84,7 +86,7 @@ const ProductsPage: React.FC = () => {
                     {product.modelName}
                   </h3>
                   <p className="text-gray-600 mb-3">
-                    {product.colors.length} Renk Seçeneği
+                    {product.colors.length} {t('products.colors')}
                   </p>
                   <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-black">

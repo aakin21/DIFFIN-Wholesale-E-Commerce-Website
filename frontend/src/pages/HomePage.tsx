@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import api, { BASE_URL } from '../utils/api';
 import { Category, Product } from '../types';
 
 const HomePage: React.FC = () => {
+  const { t } = useTranslation();
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -67,7 +69,7 @@ const HomePage: React.FC = () => {
             textAlign: 'center',
             color: '#000000'
           }}>
-            TOPTAN ÜRÜNLERİMİZ
+{t('home.wholesaleProducts')}
           </h2>
 
           {loading ? (
@@ -82,7 +84,7 @@ const HomePage: React.FC = () => {
               }}></div>
             </div>
           ) : categories.length === 0 ? (
-            <p style={{textAlign: 'center', color: '#9ca3af'}}>Henüz kategori eklenmedi</p>
+            <p style={{textAlign: 'center', color: '#9ca3af'}}>{t('home.noCategories')}</p>
           ) : (
             <div style={{
               display: 'grid',
@@ -195,10 +197,10 @@ const HomePage: React.FC = () => {
                 marginBottom: '16px',
                 color: '#ffffff'
               }}>
-                MARKANIZI OLUŞTURALIM
+{t('home.createBrand.title')}
               </h3>
               <p style={{fontSize: isMobile ? '13px' : '14px', color: '#d1d5db'}}>
-                Kendi markanızı yaratın, size özel çözümler
+                {t('home.createBrand.description')}
               </p>
             </Link>
 
@@ -225,10 +227,10 @@ const HomePage: React.FC = () => {
                 marginBottom: '16px',
                 color: '#ffffff'
               }}>
-                ÖZEL ÜRÜN ÜRETİMİ
+{t('home.customProduct.title')}
               </h3>
               <p style={{fontSize: isMobile ? '13px' : '14px', color: '#d1d5db'}}>
-                İstediğiniz ürünü, istediğiniz şekilde
+                {t('home.customProduct.description')}
               </p>
             </Link>
           </div>
@@ -250,10 +252,10 @@ const HomePage: React.FC = () => {
               {/* Sol - HAKKIMIZDA */}
               <div style={{flex: 1, paddingRight: isMobile ? '0' : '32px', marginBottom: isMobile ? '32px' : '0'}}>
                 <h2 style={{fontSize: isMobile ? '24px' : '30px', fontWeight: '300', letterSpacing: '0.1em', marginBottom: '24px', color: '#ffffff'}}>
-                  HAKKIMIZDA
+                  {t('home.about.title')}
                 </h2>
                 <p style={{lineHeight: '1.6', color: '#b0b0b0', fontSize: isMobile ? '14px' : '16px'}}>
-                  DIFFIN, en kaliteli ürünleri üretmeyi hedefler. Üretimde en kaliteli hammaddeleri kullanır ve müşteri memnuniyetini ön planda tutar.
+                  {t('home.about.description')}
                 </p>
               </div>
 
@@ -274,19 +276,19 @@ const HomePage: React.FC = () => {
               <div style={{flex: 1, paddingLeft: isMobile ? '0' : '32px'}}>
                 <div style={{display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '20px'}}>
                   <span style={{color: '#ffffff', marginTop: '4px'}}>—</span>
-                  <p style={{color: '#b0b0b0', margin: 0, fontSize: isMobile ? '14px' : '16px'}}>Premium Kalite Kumaş</p>
+                  <p style={{color: '#b0b0b0', margin: 0, fontSize: isMobile ? '14px' : '16px'}}>{t('home.about.feature1')}</p>
                 </div>
                 <div style={{display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '20px'}}>
                   <span style={{color: '#ffffff', marginTop: '4px'}}>—</span>
-                  <p style={{color: '#b0b0b0', margin: 0, fontSize: isMobile ? '14px' : '16px'}}>Detaylı Kalite Kontrol</p>
+                  <p style={{color: '#b0b0b0', margin: 0, fontSize: isMobile ? '14px' : '16px'}}>{t('home.about.feature2')}</p>
                 </div>
                 <div style={{display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '20px'}}>
                   <span style={{color: '#ffffff', marginTop: '4px'}}>—</span>
-                  <p style={{color: '#b0b0b0', margin: 0, fontSize: isMobile ? '14px' : '16px'}}>Uzun Ömürlü Dikişler</p>
+                  <p style={{color: '#b0b0b0', margin: 0, fontSize: isMobile ? '14px' : '16px'}}>{t('home.about.feature3')}</p>
                 </div>
                 <div style={{display: 'flex', alignItems: 'flex-start', gap: '12px'}}>
                   <span style={{color: '#ffffff', marginTop: '4px'}}>—</span>
-                  <p style={{color: '#b0b0b0', margin: 0, fontSize: isMobile ? '14px' : '16px'}}>Renk Sabitleme Garantisi</p>
+                  <p style={{color: '#b0b0b0', margin: 0, fontSize: isMobile ? '14px' : '16px'}}>{t('home.about.feature4')}</p>
                 </div>
               </div>
             </div>
@@ -297,24 +299,34 @@ const HomePage: React.FC = () => {
         <div style={{padding: isMobile ? '32px 16px' : '48px 24px'}}>
           <div style={{maxWidth: '1200px', margin: '0 auto', textAlign: 'center'}}>
             <h3 style={{fontSize: isMobile ? '16px' : '18px', letterSpacing: '0.1em', marginBottom: '24px', fontWeight: '300', color: '#ffffff'}}>
-              İLETİŞİM
+              {t('home.contact.title')}
             </h3>
             <div style={{display: 'flex', flexDirection: 'column', gap: '12px', fontSize: isMobile ? '13px' : '14px', alignItems: 'center'}}>
               <p style={{margin: 0}}>
                 <a href="mailto:info@diffin.com" style={{color: '#b0b0b0', textDecoration: 'none', transition: 'color 0.3s'}} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#b0b0b0'}>
-                  info@diffin.com
+                  {t('home.contact.email')}
                 </a>
               </p>
               <p style={{margin: 0}}>
-                <a href="tel:+905551234567" style={{color: '#b0b0b0', textDecoration: 'none', transition: 'color 0.3s'}} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#b0b0b0'}>
-                  +90 555 123 4567
+                <a href="tel:+905531349703" style={{color: '#b0b0b0', textDecoration: 'none', transition: 'color 0.3s'}} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#b0b0b0'}>
+                  {t('home.contact.phone1')}
                 </a>
               </p>
-              <p style={{fontSize: isMobile ? '11px' : '12px', color: '#b0b0b0', margin: 0}}>Çalışma Saatleri: 7/24</p>
+              <p style={{margin: 0}}>
+                <a href="tel:+36202204577" style={{color: '#b0b0b0', textDecoration: 'none', transition: 'color 0.3s'}} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#b0b0b0'}>
+                  {t('home.contact.phone2')}
+                </a>
+              </p>
+              <p style={{margin: 0}}>
+                <a href="tel:+905313695893" style={{color: '#b0b0b0', textDecoration: 'none', transition: 'color 0.3s'}} onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'} onMouseOut={(e) => e.currentTarget.style.color = '#b0b0b0'}>
+                  {t('home.contact.phone3')}
+                </a>
+              </p>
+              <p style={{fontSize: isMobile ? '11px' : '12px', color: '#b0b0b0', margin: 0}}>{t('home.contact.workingHours')}</p>
             </div>
             <div style={{borderTop: '1px solid #2d2d2d', marginTop: '32px', paddingTop: '24px'}}>
               <p style={{fontSize: isMobile ? '11px' : '12px', color: '#6b7280', margin: 0}}>
-                &copy; {new Date().getFullYear()} DIFFIN. Tüm hakları saklıdır.
+                &copy; {new Date().getFullYear()} DIFFIN. {t('home.contact.copyright')}
               </p>
             </div>
           </div>

@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
+import { useTranslation } from 'react-i18next';
 
 const Header: React.FC = () => {
   const { cart } = useCart();
+  const { t, i18n } = useTranslation();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+    localStorage.setItem('language', lng);
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -47,12 +54,74 @@ const Header: React.FC = () => {
               letterSpacing: isMobile ? '0.1em' : '0.15em',
               color: '#b0b0b0'
             }}>
-              TOPTAN TEKSTİL
+              {t('header.subtitle')}
             </span>
           </div>
 
-          {/* Hesabım ve Sepet - Sağ */}
-          <div style={{display: 'flex', alignItems: 'center', gap: isMobile ? '16px' : '20px'}}>
+          {/* Dil, Sepet ve Hesabım - Sağ */}
+          <div style={{display: 'flex', alignItems: 'center', gap: isMobile ? '12px' : '20px'}}>
+            {/* Dil Seçici */}
+            <div style={{display: 'flex', gap: '8px', alignItems: 'center'}}>
+              <button
+                onClick={() => changeLanguage('tr')}
+                style={{
+                  background: i18n.language === 'tr' ? '#ffffff' : 'transparent',
+                  color: i18n.language === 'tr' ? '#000000' : '#b0b0b0',
+                  border: '1px solid ' + (i18n.language === 'tr' ? '#ffffff' : '#4b5563'),
+                  padding: isMobile ? '4px 8px' : '6px 12px',
+                  fontSize: isMobile ? '11px' : '12px',
+                  fontWeight: '600',
+                  letterSpacing: '0.1em',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s',
+                  borderRadius: '2px'
+                }}
+                onMouseOver={(e) => {
+                  if (i18n.language !== 'tr') {
+                    e.currentTarget.style.borderColor = '#ffffff';
+                    e.currentTarget.style.color = '#ffffff';
+                  }
+                }}
+                onMouseOut={(e) => {
+                  if (i18n.language !== 'tr') {
+                    e.currentTarget.style.borderColor = '#4b5563';
+                    e.currentTarget.style.color = '#b0b0b0';
+                  }
+                }}
+              >
+                TR
+              </button>
+              <button
+                onClick={() => changeLanguage('en')}
+                style={{
+                  background: i18n.language === 'en' ? '#ffffff' : 'transparent',
+                  color: i18n.language === 'en' ? '#000000' : '#b0b0b0',
+                  border: '1px solid ' + (i18n.language === 'en' ? '#ffffff' : '#4b5563'),
+                  padding: isMobile ? '4px 8px' : '6px 12px',
+                  fontSize: isMobile ? '11px' : '12px',
+                  fontWeight: '600',
+                  letterSpacing: '0.1em',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s',
+                  borderRadius: '2px'
+                }}
+                onMouseOver={(e) => {
+                  if (i18n.language !== 'en') {
+                    e.currentTarget.style.borderColor = '#ffffff';
+                    e.currentTarget.style.color = '#ffffff';
+                  }
+                }}
+                onMouseOut={(e) => {
+                  if (i18n.language !== 'en') {
+                    e.currentTarget.style.borderColor = '#4b5563';
+                    e.currentTarget.style.color = '#b0b0b0';
+                  }
+                }}
+              >
+                EN
+              </button>
+            </div>
+
             {/* Sepet */}
             <Link
               to="/cart"
