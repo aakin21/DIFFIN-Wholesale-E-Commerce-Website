@@ -1,0 +1,145 @@
+{
+  "header": {
+    "products": "ÜRÜNLER",
+    "cart": "SEPET",
+    "account": "HESAP",
+    "login": "GİRİŞ YAP",
+    "logout": "ÇIKIŞ YAP",
+    "emptyCart": "Sepetiniz boş"
+  },
+  "home": {
+    "wholesaleProducts": "TOPTAN ÜRÜNLERİMİZ",
+    "loading": "Yükleniyor...",
+    "noCategories": "Henüz kategori eklenmedi",
+    "createBrand": {
+      "title": "MARKANIZI OLUŞTURALIM",
+      "description": "Kendi markanızı yaratın, size özel çözümler"
+    },
+    "customProduct": {
+      "title": "ÖZEL ÜRÜN ÜRETİMİ",
+      "description": "İstediğiniz ürünü, istediğiniz şekilde"
+    },
+    "about": {
+      "title": "HAKKIMIZDA",
+      "description": "DIFFIN, en kaliteli ürünleri üretmeyi hedefler. Üretimde en kaliteli hammaddeleri kullanır ve müşteri memnuniyetini ön planda tutar.",
+      "feature1": "Premium Kalite Kumaş",
+      "feature2": "Detaylı Kalite Kontrol",
+      "feature3": "Uzun Ömürlü Dikişler",
+      "feature4": "Renk Sabitleme Garantisi"
+    },
+    "contact": {
+      "title": "İLETİŞİM",
+      "email": "info@diffin.com",
+      "phone1": "+90 553 134 97 03",
+      "phone2": "+36 20 220 45 77",
+      "phone3": "+90 531 369 58 93",
+      "workingHours": "Çalışma Saatleri: 7/24",
+      "copyright": "Tüm hakları saklıdır."
+    }
+  },
+  "products": {
+    "title": "ÜRÜNLER",
+    "allCategories": "Tüm Kategoriler",
+    "noProducts": "Bu kategoride ürün bulunamadı",
+    "colors": "Renk Seçeneği",
+    "viewDetails": "Detayları Gör",
+    "backToHome": "Ana Sayfaya Dön"
+  },
+  "productDetail": {
+    "colors": "Renk Seçenekleri",
+    "addToCart": "Sepete Ekle",
+    "quantity": "Adet",
+    "description": "Ürün Açıklaması",
+    "features": "Özellikler",
+    "wholesale": "Toptan",
+    "notFound": "Ürün bulunamadı",
+    "backToProducts": "Ürünlere Dön"
+  },
+  "cart": {
+    "title": "Sepetim",
+    "emptyCart": "Sepetiniz boş",
+    "continueShopping": "Alışverişe Devam Et",
+    "remove": "Kaldır",
+    "quantity": "Adet",
+    "subtotal": "Ara Toplam",
+    "shipping": "Kargo",
+    "total": "Toplam",
+    "freeShipping": "Ücretsiz Kargo",
+    "orderForm": "Sipariş Formu",
+    "fullName": "Ad Soyad",
+    "email": "E-posta",
+    "phone": "Telefon",
+    "address": "Adres",
+    "city": "Şehir",
+    "note": "Sipariş Notu (Opsiyonel)",
+    "submitOrder": "Siparişi Gönder",
+    "submitting": "Gönderiliyor...",
+    "orderSuccess": "Siparişiniz başarıyla alındı!",
+    "orderError": "Sipariş gönderilemedi. Lütfen tekrar deneyin.",
+    "fillRequired": "Lütfen tüm gerekli alanları doldurun"
+  },
+  "createBrand": {
+    "title": "MARKANIZI OLUŞTURALIM",
+    "description": "Kendi markanızı yaratın, size özel çözümler sunalım. DIFFIN olarak, markanıza özel tasarımlar ve üretim süreçleriyle yanınızdayız.",
+    "form": {
+      "brandName": "Marka Adı",
+      "contactPerson": "Yetkili Kişi",
+      "email": "E-posta",
+      "phone": "Telefon",
+      "productType": "Ürün Tipi (T-shirt, Sweatshirt, vb.)",
+      "quantity": "Miktar (Adet)",
+      "details": "Detaylar ve Talepleriniz",
+      "submit": "Teklif İsteği Gönder",
+      "submitting": "Gönderiliyor...",
+      "success": "Teklifiniz başarıyla gönderildi! En kısa sürede size dönüş yapacağız.",
+      "error": "Teklif gönderilemedi. Lütfen tekrar deneyin.",
+      "fillRequired": "Lütfen tüm alanları doldurun"
+    },
+    "whyChooseUs": {
+      "title": "Neden Bizi Seçmelisiniz?",
+      "reason1": "Profesyonel tasarım desteği",
+      "reason2": "Kaliteli malzeme garantisi",
+      "reason3": "Hızlı üretim süreci",
+      "reason4": "Rekabetçi fiyatlar"
+    }
+  },
+  "customProduct": {
+    "title": "ÖZEL ÜRÜN ÜRETİMİ",
+    "description": "İstediğiniz ürünü, istediğiniz şekilde üretelim. DIFFIN olarak, özel tasarım ve üretim taleplerinizi gerçeğe dönüştürüyoruz.",
+    "form": {
+      "companyName": "Firma Adı",
+      "contactPerson": "Yetkili Kişi",
+      "email": "E-posta",
+      "phone": "Telefon",
+      "productDescription": "Ürün Açıklaması",
+      "quantity": "Miktar (Adet)",
+      "details": "Özel Talepler ve Detaylar",
+      "submit": "Teklif İsteği Gönder",
+      "submitting": "Gönderiliyor...",
+      "success": "Özel ürün talebiniz alındı! En kısa sürede size dönüş yapacağız.",
+      "error": "Talep gönderilemedi. Lütfen tekrar deneyin.",
+      "fillRequired": "Lütfen tüm alanları doldurun"
+    },
+    "process": {
+      "title": "Süreç Nasıl İşler?",
+      "step1": "1. Ürün detaylarınızı paylaşın",
+      "step2": "2. Teklifimizi değerlendirin",
+      "step3": "3. Onay sonrası üretim başlar",
+      "step4": "4. Ürünleriniz size ulaşır"
+    }
+  },
+  "account": {
+    "title": "Hesabım",
+    "orders": "Siparişlerim",
+    "noOrders": "Henüz sipariş bulunamadı",
+    "orderNumber": "Sipariş No",
+    "date": "Tarih",
+    "status": "Durum",
+    "total": "Toplam",
+    "pending": "Beklemede",
+    "processing": "İşleniyor",
+    "shipped": "Kargoda",
+    "delivered": "Teslim Edildi",
+    "cancelled": "İptal Edildi"
+  }
+}

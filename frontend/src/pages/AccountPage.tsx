@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useUser } from '../contexts/UserContext';
 import api from '../utils/api';
 
 const AccountPage: React.FC = () => {
+  const { t } = useTranslation();
   const { user, isLoggedIn, login, logout } = useUser();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
@@ -42,7 +44,7 @@ const AccountPage: React.FC = () => {
         login(response.data.token, response.data.user);
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Bir hata oluştu');
+      setError(err.response?.data?.message || t('account.errorOccurred'));
     } finally {
       setLoading(false);
     }
@@ -53,18 +55,18 @@ const AccountPage: React.FC = () => {
       <div style={{ minHeight: '80vh', padding: '80px 24px', backgroundColor: '#ffffff' }}>
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
           <h1 style={{ fontSize: '32px', fontWeight: '300', letterSpacing: '0.1em', marginBottom: '40px', color: '#000000' }}>
-            HESABIM
+            {t('account.title')}
           </h1>
 
           <div style={{ backgroundColor: '#f9fafb', padding: '32px', marginBottom: '32px' }}>
             <h2 style={{ fontSize: '20px', fontWeight: '400', marginBottom: '24px', color: '#000000' }}>
-              Bilgilerim
+              {t('account.myInfo')}
             </h2>
             <div style={{ display: 'grid', gap: '16px', color: '#4b5563' }}>
-              <p><strong>Ad Soyad:</strong> {user.firstName} {user.lastName}</p>
-              <p><strong>Email:</strong> {user.email}</p>
-              <p><strong>Telefon:</strong> {user.phone}</p>
-              {user.address && <p><strong>Adres:</strong> {user.address}</p>}
+              <p><strong>{t('account.fullName')}:</strong> {user.firstName} {user.lastName}</p>
+              <p><strong>{t('account.email')}:</strong> {user.email}</p>
+              <p><strong>{t('account.phone')}:</strong> {user.phone}</p>
+              {user.address && <p><strong>{t('account.address')}:</strong> {user.address}</p>}
             </div>
           </div>
 
@@ -83,7 +85,7 @@ const AccountPage: React.FC = () => {
             onMouseOver={(e) => e.currentTarget.style.opacity = '0.8'}
             onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
           >
-            ÇIKIŞ YAP
+            {t('account.logout')}
           </button>
         </div>
       </div>
@@ -94,7 +96,7 @@ const AccountPage: React.FC = () => {
     <div style={{ minHeight: '80vh', padding: '80px 24px', backgroundColor: '#ffffff' }}>
       <div style={{ maxWidth: '500px', margin: '0 auto' }}>
         <h1 style={{ fontSize: '32px', fontWeight: '300', letterSpacing: '0.1em', marginBottom: '40px', textAlign: 'center', color: '#000000' }}>
-          {isLogin ? 'GİRİŞ YAP' : 'KAYIT OL'}
+          {isLogin ? t('account.login') : t('account.register')}
         </h1>
 
         {error && (
@@ -109,7 +111,7 @@ const AccountPage: React.FC = () => {
               <input
                 type="text"
                 name="firstName"
-                placeholder="Ad"
+                placeholder={t('account.firstName')}
                 value={formData.firstName}
                 onChange={handleInputChange}
                 required
@@ -123,7 +125,7 @@ const AccountPage: React.FC = () => {
               <input
                 type="text"
                 name="lastName"
-                placeholder="Soyad"
+                placeholder={t('account.lastName')}
                 value={formData.lastName}
                 onChange={handleInputChange}
                 required
@@ -137,7 +139,7 @@ const AccountPage: React.FC = () => {
               <input
                 type="tel"
                 name="phone"
-                placeholder="Telefon"
+                placeholder={t('account.phone')}
                 value={formData.phone}
                 onChange={handleInputChange}
                 required
@@ -150,7 +152,7 @@ const AccountPage: React.FC = () => {
               />
               <textarea
                 name="address"
-                placeholder="Adres (Opsiyonel)"
+                placeholder={t('account.addressOptional')}
                 value={formData.address}
                 onChange={handleInputChange}
                 rows={3}
@@ -168,7 +170,7 @@ const AccountPage: React.FC = () => {
           <input
             type="email"
             name="email"
-            placeholder="Email"
+            placeholder={t('account.email')}
             value={formData.email}
             onChange={handleInputChange}
             required
@@ -183,7 +185,7 @@ const AccountPage: React.FC = () => {
           <input
             type="password"
             name="password"
-            placeholder="Şifre"
+            placeholder={t('account.password')}
             value={formData.password}
             onChange={handleInputChange}
             required
@@ -212,12 +214,12 @@ const AccountPage: React.FC = () => {
             onMouseOver={(e) => !loading && (e.currentTarget.style.opacity = '0.8')}
             onMouseOut={(e) => !loading && (e.currentTarget.style.opacity = '1')}
           >
-            {loading ? 'İŞLEM YAPILIYOR...' : (isLogin ? 'GİRİŞ YAP' : 'KAYIT OL')}
+            {loading ? t('account.processing') : (isLogin ? t('account.login') : t('account.register'))}
           </button>
         </form>
 
         <p style={{ marginTop: '24px', textAlign: 'center', color: '#6b7280' }}>
-          {isLogin ? 'Hesabınız yok mu?' : 'Zaten hesabınız var mı?'}{' '}
+          {isLogin ? t('account.noAccount') : t('account.haveAccount')}{' '}
           <button
             onClick={() => {
               setIsLogin(!isLogin);
@@ -232,7 +234,7 @@ const AccountPage: React.FC = () => {
               fontSize: '14px',
             }}
           >
-            {isLogin ? 'Kayıt Ol' : 'Giriş Yap'}
+            {isLogin ? t('account.register') : t('account.login')}
           </button>
         </p>
       </div>

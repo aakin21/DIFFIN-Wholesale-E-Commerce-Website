@@ -1,0 +1,145 @@
+{
+  "header": {
+    "products": "PRODUCTS",
+    "cart": "CART",
+    "account": "ACCOUNT",
+    "login": "LOGIN",
+    "logout": "LOGOUT",
+    "emptyCart": "Your cart is empty"
+  },
+  "home": {
+    "wholesaleProducts": "WHOLESALE PRODUCTS",
+    "loading": "Loading...",
+    "noCategories": "No categories added yet",
+    "createBrand": {
+      "title": "CREATE YOUR BRAND",
+      "description": "Build your own brand with custom solutions"
+    },
+    "customProduct": {
+      "title": "CUSTOM PRODUCT MANUFACTURING",
+      "description": "The product you want, the way you want it"
+    },
+    "about": {
+      "title": "ABOUT US",
+      "description": "DIFFIN aims to produce the highest quality products. We use the finest raw materials in production and prioritize customer satisfaction.",
+      "feature1": "Premium Quality Fabric",
+      "feature2": "Detailed Quality Control",
+      "feature3": "Long-Lasting Stitching",
+      "feature4": "Color Fastness Guarantee"
+    },
+    "contact": {
+      "title": "CONTACT",
+      "email": "info@diffin.com",
+      "phone1": "+90 553 134 97 03",
+      "phone2": "+36 20 220 45 77",
+      "phone3": "+90 531 369 58 93",
+      "workingHours": "Working Hours: 24/7",
+      "copyright": "All rights reserved."
+    }
+  },
+  "products": {
+    "title": "PRODUCTS",
+    "allCategories": "All Categories",
+    "noProducts": "No products found in this category",
+    "colors": "Color Options",
+    "viewDetails": "View Details",
+    "backToHome": "Back to Home"
+  },
+  "productDetail": {
+    "colors": "Color Options",
+    "addToCart": "Add to Cart",
+    "quantity": "Quantity",
+    "description": "Product Description",
+    "features": "Features",
+    "wholesale": "Wholesale",
+    "notFound": "Product not found",
+    "backToProducts": "Back to Products"
+  },
+  "cart": {
+    "title": "My Cart",
+    "emptyCart": "Your cart is empty",
+    "continueShopping": "Continue Shopping",
+    "remove": "Remove",
+    "quantity": "Quantity",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "total": "Total",
+    "freeShipping": "Free Shipping",
+    "orderForm": "Order Form",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "city": "City",
+    "note": "Order Note (Optional)",
+    "submitOrder": "Submit Order",
+    "submitting": "Submitting...",
+    "orderSuccess": "Your order has been received successfully!",
+    "orderError": "Order could not be submitted. Please try again.",
+    "fillRequired": "Please fill in all required fields"
+  },
+  "createBrand": {
+    "title": "CREATE YOUR BRAND",
+    "description": "Create your own brand with custom solutions. As DIFFIN, we are with you with custom designs and production processes for your brand.",
+    "form": {
+      "brandName": "Brand Name",
+      "contactPerson": "Contact Person",
+      "email": "Email",
+      "phone": "Phone",
+      "productType": "Product Type (T-shirt, Sweatshirt, etc.)",
+      "quantity": "Quantity (Units)",
+      "details": "Details and Requirements",
+      "submit": "Submit Quote Request",
+      "submitting": "Submitting...",
+      "success": "Your quote request has been sent successfully! We will get back to you soon.",
+      "error": "Quote could not be submitted. Please try again.",
+      "fillRequired": "Please fill in all fields"
+    },
+    "whyChooseUs": {
+      "title": "Why Choose Us?",
+      "reason1": "Professional design support",
+      "reason2": "Quality material guarantee",
+      "reason3": "Fast production process",
+      "reason4": "Competitive prices"
+    }
+  },
+  "customProduct": {
+    "title": "CUSTOM PRODUCT MANUFACTURING",
+    "description": "Let's produce the product you want, the way you want it. As DIFFIN, we turn your custom design and production requests into reality.",
+    "form": {
+      "companyName": "Company Name",
+      "contactPerson": "Contact Person",
+      "email": "Email",
+      "phone": "Phone",
+      "productDescription": "Product Description",
+      "quantity": "Quantity (Units)",
+      "details": "Special Requests and Details",
+      "submit": "Submit Quote Request",
+      "submitting": "Submitting...",
+      "success": "Your custom product request has been received! We will get back to you soon.",
+      "error": "Request could not be submitted. Please try again.",
+      "fillRequired": "Please fill in all fields"
+    },
+    "process": {
+      "title": "How Does the Process Work?",
+      "step1": "1. Share your product details",
+      "step2": "2. Review our quote",
+      "step3": "3. Production starts after approval",
+      "step4": "4. Your products are delivered"
+    }
+  },
+  "account": {
+    "title": "My Account",
+    "orders": "My Orders",
+    "noOrders": "No orders found yet",
+    "orderNumber": "Order No",
+    "date": "Date",
+    "status": "Status",
+    "total": "Total",
+    "pending": "Pending",
+    "processing": "Processing",
+    "shipped": "Shipped",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled"
+  }
+}
