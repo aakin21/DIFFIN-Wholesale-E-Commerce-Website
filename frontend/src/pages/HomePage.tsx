@@ -88,8 +88,8 @@ const HomePage: React.FC = () => {
           ) : (
             <div style={{
               display: 'grid',
-              gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
-              gap: isMobile ? '48px' : '64px'
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: isMobile ? '32px' : '64px'
             }}>
               {categories.map((category) => {
                 const featuredProducts = getFeaturedProductsForCategory(category._id);
@@ -106,9 +106,9 @@ const HomePage: React.FC = () => {
                       }}
                     >
                       <h3 style={{
-                        fontSize: isMobile ? '20px' : '24px',
+                        fontSize: isMobile ? '16px' : '20px',
                         fontWeight: '300',
-                        letterSpacing: isMobile ? '0.1em' : '0.15em',
+                        letterSpacing: isMobile ? '0.08em' : '0.12em',
                         color: '#000000',
                         transition: 'opacity 0.3s'
                       }}
