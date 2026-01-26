@@ -237,10 +237,134 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
+      {/* WHO WE ARE Section */}
+      <section style={{padding: isMobile ? '64px 16px' : '100px 24px', backgroundColor: '#ffffff'}}>
+        <div style={{maxWidth: '1000px', margin: '0 auto'}}>
+          <h2 style={{
+            fontSize: isMobile ? '28px' : '40px',
+            fontWeight: '300',
+            letterSpacing: '0.12em',
+            marginBottom: isMobile ? '32px' : '48px',
+            textAlign: 'center',
+            color: '#000000'
+          }}>
+            {t('home.whoWeAre.title')}
+          </h2>
+
+          {/* Text Content */}
+          <div style={{textAlign: 'center', marginBottom: isMobile ? '48px' : '64px'}}>
+            <p style={{
+              fontSize: isMobile ? '15px' : '17px',
+              lineHeight: '1.9',
+              color: '#374151',
+              marginBottom: '20px',
+              maxWidth: '800px',
+              margin: '0 auto 20px'
+            }}>
+              {t('home.whoWeAre.description')}
+            </p>
+            <p style={{
+              fontSize: isMobile ? '15px' : '17px',
+              lineHeight: '1.9',
+              color: '#374151',
+              marginBottom: '20px',
+              maxWidth: '800px',
+              margin: '0 auto 20px'
+            }}>
+              {t('home.whoWeAre.description2')}
+            </p>
+            <p style={{
+              fontSize: isMobile ? '15px' : '17px',
+              lineHeight: '1.9',
+              color: '#374151',
+              fontWeight: '500',
+              maxWidth: '800px',
+              margin: '0 auto'
+            }}>
+              {t('home.whoWeAre.description4')}
+            </p>
+          </div>
+
+          {/* Facilities Title */}
+          <h3 style={{
+            fontSize: isMobile ? '20px' : '26px',
+            fontWeight: '300',
+            letterSpacing: '0.1em',
+            marginBottom: isMobile ? '32px' : '40px',
+            textAlign: 'center',
+            color: '#000000'
+          }}>
+            {t('home.whoWeAre.facilitiesTitle')}
+          </h3>
+
+          {/* Image Placeholders Grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
+            gap: isMobile ? '16px' : '24px',
+            marginBottom: isMobile ? '48px' : '64px'
+          }}>
+            {['production', 'showroom', 'productDetails', 'office', 'packaging'].map((key, index) => (
+              <div key={index} style={{ textAlign: 'center' }}>
+                <div style={{
+                  aspectRatio: '1/1',
+                  backgroundColor: '#f9fafb',
+                  border: '2px dashed #e5e7eb',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '12px'
+                }}>
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21 15 16 10 5 21"/>
+                  </svg>
+                </div>
+                <p style={{
+                  fontSize: isMobile ? '11px' : '13px',
+                  color: '#6b7280',
+                  fontWeight: '500',
+                  letterSpacing: '0.05em'
+                }}>
+                  {t(`home.whoWeAre.${key}`)}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Office Location */}
+          <div style={{textAlign: 'center'}}>
+            <p style={{
+              fontSize: isMobile ? '14px' : '16px',
+              color: '#6b7280',
+              marginBottom: '8px',
+              letterSpacing: '0.05em'
+            }}>
+              {t('home.whoWeAre.location')}
+            </p>
+            <p style={{
+              fontSize: isMobile ? '20px' : '24px',
+              fontWeight: '300',
+              color: '#000000',
+              marginBottom: '8px'
+            }}>
+              {t('home.whoWeAre.locationCity')}
+            </p>
+            <p style={{
+              fontSize: isMobile ? '12px' : '14px',
+              color: '#9ca3af'
+            }}>
+              {t('home.whoWeAre.locationNote')}
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Beyazdan Siyaha Gradient Geçiş */}
       <div style={{
         height: '150px',
-        background: 'linear-gradient(to bottom, #f3f4f6, #000000)'
+        background: 'linear-gradient(to bottom, #ffffff, #000000)'
       }}></div>
 
       {/* HAKKIMIZDA VE İLETİŞİM - FULL SİYAH */}

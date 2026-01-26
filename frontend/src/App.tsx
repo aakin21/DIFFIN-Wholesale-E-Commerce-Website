@@ -15,6 +15,7 @@ import CartPage from './pages/CartPage';
 import AccountPage from './pages/AccountPage';
 import CreateBrandPage from './pages/CreateBrandPage';
 import CustomProductPage from './pages/CustomProductPage';
+import WhoWeArePage from './pages/WhoWeArePage';
 
 // Admin Pages
 import AdminLoginPage from './pages/admin/AdminLoginPage';
@@ -95,6 +96,16 @@ function App() {
               <>
                 <Header />
                 <CustomProductPage />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <>
+                <Header />
+                <WhoWeArePage />
                 <Footer />
               </>
             }
