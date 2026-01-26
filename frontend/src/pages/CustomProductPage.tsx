@@ -1,7 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const CustomProductPage: React.FC = () => {
-  const whatsappNumber = '+905551234567';
+  const { t } = useTranslation();
+  const whatsappNumber = '+905531349703';
 
   const handleWhatsAppClick = () => {
     window.open(`https://wa.me/${whatsappNumber}`, '_blank');
@@ -18,7 +20,7 @@ const CustomProductPage: React.FC = () => {
           marginBottom: '32px',
           color: '#000000'
         }}>
-          ÖZEL ÜRÜN ÜRETİMİ
+          {t('customProduct.title')}
         </h1>
         <p style={{
           fontSize: '18px',
@@ -27,8 +29,7 @@ const CustomProductPage: React.FC = () => {
           maxWidth: '700px',
           margin: '0 auto'
         }}>
-          İstediğiniz ürünü, istediğiniz şekilde üretiyoruz.
-          Özel tasarım, kumaş seçimi, etiket ve paketleme — her detay sizin kontrolünüzde.
+          {t('customProduct.subtitle')}
         </p>
       </div>
 
@@ -55,10 +56,10 @@ const CustomProductPage: React.FC = () => {
               color: '#000000',
               letterSpacing: '0.05em'
             }}>
-              ÖZEL TASARIM
+              {t('customProduct.features.feature1')}
             </h3>
             <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#6b7280' }}>
-              Fikirlerinizi hayata geçiriyoruz, benzersiz ürünler yaratıyoruz
+              {t('customProduct.features.feature1Desc')}
             </p>
           </div>
 
@@ -70,10 +71,10 @@ const CustomProductPage: React.FC = () => {
               color: '#000000',
               letterSpacing: '0.05em'
             }}>
-              KUMAŞ SEÇİMİ
+              {t('customProduct.features.feature2')}
             </h3>
             <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#6b7280' }}>
-              Geniş kumaş seçenekleri ile istediğiniz kaliteyi sağlıyoruz
+              {t('customProduct.features.feature2Desc')}
             </p>
           </div>
 
@@ -85,10 +86,10 @@ const CustomProductPage: React.FC = () => {
               color: '#000000',
               letterSpacing: '0.05em'
             }}>
-              BASKI & NAKIŞ
+              {t('customProduct.features.feature3')}
             </h3>
             <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#6b7280' }}>
-              Markanıza özel baskı ve nakış işlemleri yapıyoruz
+              {t('customProduct.features.feature3Desc')}
             </p>
           </div>
         </div>
@@ -111,10 +112,10 @@ const CustomProductPage: React.FC = () => {
           marginBottom: '24px',
           color: '#000000'
         }}>
-          DETAYLI BİLGİ İÇİN
+          {t('customProduct.contact.title')}
         </h2>
         <p style={{ fontSize: '15px', color: '#6b7280', marginBottom: '32px', lineHeight: '1.6' }}>
-          Özel üretim projenizi görüşmek ve teklifinizi almak için bizimle iletişime geçin
+          {t('customProduct.contact.description')}
         </p>
         <button
           onClick={handleWhatsAppClick}
@@ -132,7 +133,7 @@ const CustomProductPage: React.FC = () => {
           onMouseOver={(e) => e.currentTarget.style.opacity = '0.8'}
           onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
         >
-          WHATSAPP İLE İLETİŞİME GEÇ
+          {t('customProduct.contact.whatsapp')}
         </button>
       </div>
 
@@ -153,10 +154,10 @@ const CustomProductPage: React.FC = () => {
           marginBottom: '12px',
           color: '#6b7280'
         }}>
-          MİNİMUM SİPARİŞ
+          {t('customProduct.minOrder.title')}
         </h3>
         <p style={{ fontSize: '24px', fontWeight: '300', color: '#000000', letterSpacing: '0.05em' }}>
-          Renk ve model başı 6 seri (30 adet)
+          {t('customProduct.minOrder.amount')}
         </p>
       </div>
     </div>
