@@ -1,7 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const CreateBrandPage: React.FC = () => {
-  const whatsappNumber = '+905551234567';
+  const { t } = useTranslation();
+  const whatsappNumber = '+905531349703';
 
   const handleWhatsAppClick = () => {
     window.open(`https://wa.me/${whatsappNumber}`, '_blank');
@@ -18,7 +20,7 @@ const CreateBrandPage: React.FC = () => {
           marginBottom: '32px',
           color: '#000000'
         }}>
-          MARKANIZI OLUŞTURALIM
+          {t('createBrand.title')}
         </h1>
         <p style={{
           fontSize: '18px',
@@ -27,8 +29,7 @@ const CreateBrandPage: React.FC = () => {
           maxWidth: '700px',
           margin: '0 auto'
         }}>
-          Toptan satış yaptığımız ürünlerden sipariş verin ya da numune gönderin.
-          Üretim, etiket, paket — geri kalan her şeyi biz ayarlıyoruz.
+          {t('createBrand.subtitle')}
         </p>
       </div>
 
@@ -55,10 +56,10 @@ const CreateBrandPage: React.FC = () => {
               color: '#000000',
               letterSpacing: '0.05em'
             }}>
-              NUMUNE ÜRETİMİ
+              {t('createBrand.features.feature1')}
             </h3>
             <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#6b7280' }}>
-              Numunenizi gönderin, istediğiniz kalitede üretim sağlıyoruz
+              {t('createBrand.features.feature1Desc')}
             </p>
           </div>
 
@@ -70,10 +71,10 @@ const CreateBrandPage: React.FC = () => {
               color: '#000000',
               letterSpacing: '0.05em'
             }}>
-              ETİKET & PAKETLEME
+              {t('createBrand.features.feature2')}
             </h3>
             <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#6b7280' }}>
-              Markanıza özel etiket ve paketleme çözümleri
+              {t('createBrand.features.feature2Desc')}
             </p>
           </div>
 
@@ -85,10 +86,10 @@ const CreateBrandPage: React.FC = () => {
               color: '#000000',
               letterSpacing: '0.05em'
             }}>
-              TAM HİZMET
+              {t('createBrand.features.feature3')}
             </h3>
             <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#6b7280' }}>
-              Tasarımdan teslimat a kadar her aşamada yanınızdayız
+              {t('createBrand.features.feature3Desc')}
             </p>
           </div>
         </div>
@@ -111,10 +112,10 @@ const CreateBrandPage: React.FC = () => {
           marginBottom: '24px',
           color: '#000000'
         }}>
-          DETAYLI BİLGİ İÇİN
+          {t('createBrand.contact.title')}
         </h2>
         <p style={{ fontSize: '15px', color: '#6b7280', marginBottom: '32px', lineHeight: '1.6' }}>
-          Projenizi görüşmek ve özel teklifinizi almak için bizimle iletişime geçin
+          {t('createBrand.contact.description')}
         </p>
         <button
           onClick={handleWhatsAppClick}
@@ -132,7 +133,7 @@ const CreateBrandPage: React.FC = () => {
           onMouseOver={(e) => e.currentTarget.style.opacity = '0.8'}
           onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
         >
-          WHATSAPP İLE İLETİŞİME GEÇ
+          {t('createBrand.contact.whatsapp')}
         </button>
       </div>
 
@@ -153,10 +154,10 @@ const CreateBrandPage: React.FC = () => {
           marginBottom: '12px',
           color: '#6b7280'
         }}>
-          MİNİMUM SİPARİŞ
+          {t('createBrand.minOrder.title')}
         </h3>
         <p style={{ fontSize: '24px', fontWeight: '300', color: '#000000', letterSpacing: '0.05em' }}>
-          Renk ve model başı 6 seri (30 adet)
+          {t('createBrand.minOrder.amount')}
         </p>
       </div>
     </div>
