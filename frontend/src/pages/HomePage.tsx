@@ -39,21 +39,24 @@ const HomePage: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Her kategori için öne çıkan ürünü bul (sadece 1 tane)
-  const getFeaturedProductsForCategory = (categoryId: string) => {
-    return products
-      .filter(product => product.categoryId === categoryId)
-      .flatMap(product =>
-        product.colors
-          .filter(color => color.featured)
-          .map(color => ({
-            productId: product._id,
-            modelName: product.modelName,
-            colorName: color.colorName,
-            imageUrl: color.imageUrl
-          }))
-      )
-      .slice(0, 1); // Sadece ilk öne çıkan ürünü al
+  // Her kategori için random bir ürün ve renk seç
+  const getRandomProductForCategory = (categoryId: string) => {
+    const categoryProducts = products.filter(product => {
+      const id = product.categoryId && typeof product.categoryId === 'object'
+        ? (product.categoryId as Category)._id
+        : product.categoryId as string;
+      return id === categoryId;
+    });
+    if (categoryProducts.length === 0) return null;
+    const randomProduct = categoryProducts[Math.floor(Math.random() * categoryProducts.length)];
+    if (randomProduct.colors.length === 0) return null;
+    const randomColor = randomProduct.colors[Math.floor(Math.random() * randomProduct.colors.length)];
+    return {
+      productId: randomProduct._id,
+      modelName: randomProduct.modelName,
+      colorName: randomColor.colorName,
+      imageUrl: randomColor.imageUrl,
+    };
   };
 
   return (
@@ -88,11 +91,11 @@ const HomePage: React.FC = () => {
           ) : (
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: isMobile ? '32px' : '64px'
+              gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+              gap: isMobile ? '32px' : '40px'
             }}>
               {categories.map((category) => {
-                const featuredProducts = getFeaturedProductsForCategory(category._id);
+                const randomItem = getRandomProductForCategory(category._id);
                 return (
                   <div key={category._id}>
                     {/* Kategori Başlığı */}
@@ -106,7 +109,7 @@ const HomePage: React.FC = () => {
                       }}
                     >
                       <h3 style={{
-                        fontSize: isMobile ? '16px' : '20px',
+                        fontSize: isMobile ? '16px' : '18px',
                         fontWeight: '300',
                         letterSpacing: isMobile ? '0.08em' : '0.12em',
                         color: '#000000',
@@ -119,48 +122,43 @@ const HomePage: React.FC = () => {
                       </h3>
                     </Link>
 
-                    {/* Öne Çıkan Ürün */}
-                    {featuredProducts.length > 0 && (
-                      <div>
-                        {featuredProducts.map((item, index) => (
-                          <Link
-                            key={index}
-                            to={`/product/${item.productId}`}
+                    {/* Random Ürün */}
+                    {randomItem && (
+                      <Link
+                        to={`/product/${randomItem.productId}`}
+                        style={{
+                          textDecoration: 'none',
+                          display: 'block'
+                        }}
+                      >
+                        <div style={{
+                          backgroundColor: '#f9fafb',
+                          aspectRatio: '1/1',
+                          overflow: 'hidden',
+                          marginBottom: '12px'
+                        }}>
+                          <img
+                            src={`${BASE_URL}${randomItem.imageUrl}`}
+                            alt={`${randomItem.modelName} - ${randomItem.colorName}`}
                             style={{
-                              textDecoration: 'none',
-                              display: 'block'
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'cover',
+                              transition: 'transform 0.3s'
                             }}
-                          >
-                            <div style={{
-                              backgroundColor: '#f9fafb',
-                              aspectRatio: '1/1',
-                              overflow: 'hidden',
-                              marginBottom: '12px'
-                            }}>
-                              <img
-                                src={`${BASE_URL}${item.imageUrl}`}
-                                alt={`${item.modelName} - ${item.colorName}`}
-                                style={{
-                                  width: '100%',
-                                  height: '100%',
-                                  objectFit: 'cover',
-                                  transition: 'transform 0.3s'
-                                }}
-                                onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                                onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                              />
-                            </div>
-                            <p style={{
-                              fontSize: '13px',
-                              color: '#000000',
-                              textAlign: 'center',
-                              letterSpacing: '0.05em'
-                            }}>
-                              {item.modelName} - {item.colorName}
-                            </p>
-                          </Link>
-                        ))}
-                      </div>
+                            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                            onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                          />
+                        </div>
+                        <p style={{
+                          fontSize: '12px',
+                          color: '#000000',
+                          textAlign: 'center',
+                          letterSpacing: '0.05em'
+                        }}>
+                          {randomItem.modelName} - {randomItem.colorName}
+                        </p>
+                      </Link>
                     )}
                   </div>
                 );
@@ -237,134 +235,10 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* WHO WE ARE Section */}
-      <section style={{padding: isMobile ? '64px 16px' : '100px 24px', backgroundColor: '#ffffff'}}>
-        <div style={{maxWidth: '1000px', margin: '0 auto'}}>
-          <h2 style={{
-            fontSize: isMobile ? '28px' : '40px',
-            fontWeight: '300',
-            letterSpacing: '0.12em',
-            marginBottom: isMobile ? '32px' : '48px',
-            textAlign: 'center',
-            color: '#000000'
-          }}>
-            {t('home.whoWeAre.title')}
-          </h2>
-
-          {/* Text Content */}
-          <div style={{textAlign: 'center', marginBottom: isMobile ? '48px' : '64px'}}>
-            <p style={{
-              fontSize: isMobile ? '15px' : '17px',
-              lineHeight: '1.9',
-              color: '#374151',
-              marginBottom: '20px',
-              maxWidth: '800px',
-              margin: '0 auto 20px'
-            }}>
-              {t('home.whoWeAre.description')}
-            </p>
-            <p style={{
-              fontSize: isMobile ? '15px' : '17px',
-              lineHeight: '1.9',
-              color: '#374151',
-              marginBottom: '20px',
-              maxWidth: '800px',
-              margin: '0 auto 20px'
-            }}>
-              {t('home.whoWeAre.description2')}
-            </p>
-            <p style={{
-              fontSize: isMobile ? '15px' : '17px',
-              lineHeight: '1.9',
-              color: '#374151',
-              fontWeight: '500',
-              maxWidth: '800px',
-              margin: '0 auto'
-            }}>
-              {t('home.whoWeAre.description4')}
-            </p>
-          </div>
-
-          {/* Facilities Title */}
-          <h3 style={{
-            fontSize: isMobile ? '20px' : '26px',
-            fontWeight: '300',
-            letterSpacing: '0.1em',
-            marginBottom: isMobile ? '32px' : '40px',
-            textAlign: 'center',
-            color: '#000000'
-          }}>
-            {t('home.whoWeAre.facilitiesTitle')}
-          </h3>
-
-          {/* Image Placeholders Grid */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
-            gap: isMobile ? '16px' : '24px',
-            marginBottom: isMobile ? '48px' : '64px'
-          }}>
-            {['production', 'showroom', 'productDetails', 'office', 'packaging'].map((key, index) => (
-              <div key={index} style={{ textAlign: 'center' }}>
-                <div style={{
-                  aspectRatio: '1/1',
-                  backgroundColor: '#f9fafb',
-                  border: '2px dashed #e5e7eb',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '12px'
-                }}>
-                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="1.5">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                    <circle cx="8.5" cy="8.5" r="1.5"/>
-                    <polyline points="21 15 16 10 5 21"/>
-                  </svg>
-                </div>
-                <p style={{
-                  fontSize: isMobile ? '11px' : '13px',
-                  color: '#6b7280',
-                  fontWeight: '500',
-                  letterSpacing: '0.05em'
-                }}>
-                  {t(`home.whoWeAre.${key}`)}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          {/* Office Location */}
-          <div style={{textAlign: 'center'}}>
-            <p style={{
-              fontSize: isMobile ? '14px' : '16px',
-              color: '#6b7280',
-              marginBottom: '8px',
-              letterSpacing: '0.05em'
-            }}>
-              {t('home.whoWeAre.location')}
-            </p>
-            <p style={{
-              fontSize: isMobile ? '20px' : '24px',
-              fontWeight: '300',
-              color: '#000000',
-              marginBottom: '8px'
-            }}>
-              {t('home.whoWeAre.locationCity')}
-            </p>
-            <p style={{
-              fontSize: isMobile ? '12px' : '14px',
-              color: '#9ca3af'
-            }}>
-              {t('home.whoWeAre.locationNote')}
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* Beyazdan Siyaha Gradient Geçiş */}
       <div style={{
         height: '150px',
-        background: 'linear-gradient(to bottom, #ffffff, #000000)'
+        background: 'linear-gradient(to bottom, #f3f4f6, #000000)'
       }}></div>
 
       {/* HAKKIMIZDA VE İLETİŞİM - FULL SİYAH */}

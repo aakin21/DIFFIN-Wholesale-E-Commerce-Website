@@ -58,7 +58,7 @@ const ProductsPage: React.FC = () => {
             <p className="text-2xl text-gray-500">{t('products.noProducts')}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {products.map((product) => (
               <Link
                 key={product._id}

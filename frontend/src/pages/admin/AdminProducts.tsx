@@ -23,6 +23,10 @@ const AdminProducts: React.FC = () => {
   ]);
 
   useEffect(() => {
+    if (!localStorage.getItem('adminToken')) {
+      navigate('/admin');
+      return;
+    }
     fetchData();
   }, []);
 
@@ -32,8 +36,8 @@ const AdminProducts: React.FC = () => {
         api.get('/products'),
         api.get('/categories'),
       ]);
-      setProducts(productsRes.data);
-      setCategories(categoriesRes.data);
+      setProducts(Array.isArray(productsRes.data) ? productsRes.data : []);
+      setCategories(Array.isArray(categoriesRes.data) ? categoriesRes.data : []);
     } catch (error) {
       console.error('Error fetching data:', error);
       if ((error as any).response?.status === 401) {
@@ -593,7 +597,7 @@ const AdminProducts: React.FC = () => {
                 <div style={{padding: '16px'}}>
                   <h3 style={{fontWeight: '500', marginBottom: '4px', fontSize: '14px'}}>{product.modelName}</h3>
                   <p style={{fontSize: '12px', color: '#6b7280', marginBottom: '8px'}}>
-                    {typeof product.categoryId === 'object' ? product.categoryId.name : 'N/A'}
+                    {product.categoryId && typeof product.categoryId === 'object' ? (product.categoryId as Category).name : 'N/A'}
                   </p>
 
                   {/* Renkler ve Öne Çıkar Butonları */}

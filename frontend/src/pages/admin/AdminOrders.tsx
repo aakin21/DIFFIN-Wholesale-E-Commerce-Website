@@ -10,13 +10,17 @@ const AdminOrders: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   useEffect(() => {
+    if (!localStorage.getItem('adminToken')) {
+      navigate('/admin');
+      return;
+    }
     fetchOrders();
   }, []);
 
   const fetchOrders = async () => {
     try {
       const response = await api.get('/orders');
-      setOrders(response.data);
+      setOrders(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error('Error fetching orders:', error);
       if ((error as any).response?.status === 401) {
@@ -98,7 +102,7 @@ const AdminOrders: React.FC = () => {
                       <p className="text-sm text-gray-600">{order.phone}</p>
                     </div>
                     <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                      {order.totalAmount.toLocaleString('tr-TR')} ₺
+                      {(order.totalAmount ?? 0).toLocaleString('tr-TR')} ₺
                     </span>
                   </div>
                   <p className="text-xs text-gray-500">{formatDate(order.createdAt)}</p>
@@ -161,8 +165,8 @@ const AdminOrders: React.FC = () => {
                             <p className="text-sm text-gray-600">Seri: {item.seriesCount}</p>
                           </div>
                           <div className="text-right">
-                            <p className="font-bold text-lg">{item.totalPrice.toLocaleString('tr-TR')} ₺</p>
-                            <p className="text-sm text-gray-600">{item.pricePerSeries.toLocaleString('tr-TR')} ₺ / seri</p>
+                            <p className="font-bold text-lg">{(item.totalPrice ?? 0).toLocaleString('tr-TR')} ₺</p>
+                            <p className="text-sm text-gray-600">{(item.pricePerSeries ?? 0).toLocaleString('tr-TR')} ₺ / seri</p>
                           </div>
                         </div>
                       ))}
@@ -173,7 +177,7 @@ const AdminOrders: React.FC = () => {
                   <div className="bg-black text-white rounded-xl p-6">
                     <div className="flex justify-between items-center">
                       <span className="text-xl font-bold">TOPLAM TUTAR</span>
-                      <span className="text-3xl font-bold">{selectedOrder.totalAmount.toLocaleString('tr-TR')} ₺</span>
+                      <span className="text-3xl font-bold">{(selectedOrder.totalAmount ?? 0).toLocaleString('tr-TR')} ₺</span>
                     </div>
                   </div>
                 </div>
