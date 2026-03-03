@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import api, { BASE_URL } from '../utils/api';
 import { Product, ColorVariant } from '../types';
 import { useCart } from '../contexts/CartContext';
@@ -13,6 +13,14 @@ const ProductDetailPage: React.FC = () => {
   const [selectedColor, setSelectedColor] = useState<ColorVariant | null>(null);
   const [seriesCount, setSeriesCount] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [lightbox, setLightbox] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -28,13 +36,11 @@ const ProductDetailPage: React.FC = () => {
         setLoading(false);
       }
     };
-
     fetchProduct();
   }, [productId]);
 
   const handleAddToCart = () => {
     if (!product || !selectedColor) return;
-
     addToCart({
       productId: product._id,
       modelName: product.modelName,
@@ -44,159 +50,228 @@ const ProductDetailPage: React.FC = () => {
       pricePerSeries: product.pricePerSeries,
       totalPrice: product.pricePerSeries * seriesCount,
     });
-
     navigate('/cart');
   };
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-black"></div>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+        <div style={{ width: '40px', height: '40px', border: '2px solid #000', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
       </div>
     );
   }
 
   if (!product) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl text-gray-400">Ürün bulunamadı</p>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+        <p style={{ color: '#9ca3af', fontSize: '18px' }}>Ürün bulunamadı</p>
       </div>
     );
   }
 
+  const mainImgSrc = selectedColor?.imageUrl ? `${BASE_URL}${selectedColor.imageUrl}` : null;
+
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-5xl mx-auto px-4 py-8 md:py-14">
+    <div style={{ backgroundColor: '#ffffff', minHeight: '60vh' }}>
 
-        <button
-          onClick={() => navigate(-1)}
-          className="text-gray-500 hover:text-black transition-colors mb-8 inline-flex items-center text-sm tracking-wider"
+      {/* Üst: Ana Sayfa butonu */}
+      <div style={{ borderBottom: '1px solid #e5e7eb', padding: isMobile ? '12px 16px' : '12px 40px' }}>
+        <Link
+          to="/"
+          style={{ fontSize: '12px', letterSpacing: '0.1em', color: '#000000', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+          onMouseOver={(e) => e.currentTarget.style.opacity = '0.5'}
+          onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
         >
-          ← Geri Dön
-        </button>
+          ← ANA SAYFA
+        </Link>
+      </div>
 
-        <div className="grid md:grid-cols-2 gap-10 md:gap-20">
+      {/* İçerik */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: isMobile ? '1fr' : '60% 40%',
+        maxWidth: '1300px',
+        margin: '0 auto',
+      }}>
 
-          {/* Sol: Galeri */}
-          <div>
-            {/* Ana Görsel */}
-            <div className="aspect-square bg-gray-100 overflow-hidden mb-3">
-              {selectedColor?.imageUrl ? (
-                <img
-                  src={`${BASE_URL}${selectedColor.imageUrl}`}
-                  alt={selectedColor.colorName}
-                  className="w-full h-full object-cover"
-                />
+        {/* SOL: Görseller */}
+        {isMobile ? (
+          /* Mobil: yatay scroll thumbnail + seçilen büyük */
+          <div style={{ padding: '0' }}>
+            {/* Ana görsel */}
+            <div
+              style={{ aspectRatio: '1/1', backgroundColor: '#f5f5f5', overflow: 'hidden', cursor: mainImgSrc ? 'zoom-in' : 'default' }}
+              onClick={() => mainImgSrc && setLightbox(mainImgSrc)}
+            >
+              {mainImgSrc ? (
+                <img src={mainImgSrc} alt={selectedColor?.colorName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <span className="text-8xl font-light text-gray-300">
-                    {product.modelName.charAt(0)}
-                  </span>
+                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span style={{ fontSize: '80px', color: '#e5e7eb', fontWeight: '300' }}>{product.modelName.charAt(0)}</span>
                 </div>
               )}
             </div>
-
-            {/* Thumbnail Şeridi */}
+            {/* Thumbnail şeridi */}
             {product.colors.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto pb-1">
-                {product.colors.map((color, index) => (
+              <div style={{ display: 'flex', gap: '4px', padding: '4px', overflowX: 'auto', backgroundColor: '#fafafa' }}>
+                {product.colors.map((color, i) => (
                   <button
-                    key={index}
+                    key={i}
                     onClick={() => setSelectedColor(color)}
                     style={{
-                      flexShrink: 0,
-                      width: '72px',
-                      height: '72px',
-                      padding: 0,
-                      cursor: 'pointer',
-                      backgroundColor: '#f5f5f5',
-                      overflow: 'hidden',
-                      border: selectedColor?.colorName === color.colorName
-                        ? '2px solid #000000'
-                        : '2px solid transparent',
+                      flexShrink: 0, width: '72px', height: '72px', padding: 0, cursor: 'pointer',
+                      backgroundColor: '#f0f0f0', overflow: 'hidden', border: 'none',
+                      outline: selectedColor?.colorName === color.colorName ? '2px solid #000' : '2px solid transparent',
+                      outlineOffset: '-2px',
                     }}
                   >
-                    {color.imageUrl ? (
-                      <img
-                        src={`${BASE_URL}${color.imageUrl}`}
-                        alt={color.colorName}
-                        style={{width: '100%', height: '100%', objectFit: 'cover'}}
-                      />
-                    ) : (
-                      <div style={{width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                        <span style={{fontSize: '18px', color: '#9ca3af'}}>{color.colorName.charAt(0)}</span>
-                      </div>
-                    )}
+                    {color.imageUrl
+                      ? <img src={`${BASE_URL}${color.imageUrl}`} alt={color.colorName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      : <span style={{ fontSize: '20px', color: '#9ca3af' }}>{color.colorName.charAt(0)}</span>
+                    }
                   </button>
                 ))}
               </div>
             )}
           </div>
-
-          {/* Sağ: Ürün Bilgisi */}
-          <div className="flex flex-col justify-between">
-            <div>
-              <h1 className="text-2xl md:text-3xl font-light tracking-widest text-black uppercase mb-2">
-                {product.modelName}
-              </h1>
-
-              {selectedColor && (
-                <p className="text-sm text-gray-400 tracking-wider uppercase mb-8">
-                  {selectedColor.colorName}
-                </p>
-              )}
-
-              <div className="mb-10">
-                <span className="text-2xl font-light text-black">
-                  {product.pricePerSeries.toLocaleString('tr-TR')} ₺
-                </span>
-                <span className="text-sm text-gray-400 ml-2">/ seri</span>
-              </div>
-
-              <div className="border border-gray-200 p-5 mb-10">
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  <span className="font-medium text-black">1 seri</span> = S, M (×2), L, XL — toplam 5 adet
-                </p>
-                <p className="text-xs text-gray-400 mt-2">Minimum sipariş: 1 seri</p>
-              </div>
-
-              {/* Seri Sayısı */}
-              <div className="mb-10">
-                <p className="text-xs tracking-widest uppercase text-gray-400 mb-4">Seri Sayısı</p>
-                <div className="flex items-center gap-5">
-                  <button
-                    onClick={() => setSeriesCount(Math.max(1, seriesCount - 1))}
-                    className="w-10 h-10 border border-black hover:bg-black hover:text-white transition-colors text-xl font-light flex items-center justify-center"
-                  >
-                    −
-                  </button>
-                  <span className="text-2xl font-light w-8 text-center">{seriesCount}</span>
-                  <button
-                    onClick={() => setSeriesCount(seriesCount + 1)}
-                    className="w-10 h-10 border border-black hover:bg-black hover:text-white transition-colors text-xl font-light flex items-center justify-center"
-                  >
-                    +
-                  </button>
-                </div>
-                {seriesCount > 1 && (
-                  <p className="text-sm text-gray-500 mt-3">
-                    Toplam: <strong className="text-black">{(product.pricePerSeries * seriesCount).toLocaleString('tr-TR')} ₺</strong>
-                  </p>
-                )}
-              </div>
+        ) : (
+          /* Desktop: sol ince thumbnail sütunu + sağda büyük görsel */
+          <div style={{ display: 'flex', gap: '0' }}>
+            {/* Thumbnail sütunu */}
+            <div style={{ width: '90px', flexShrink: 0, borderRight: '1px solid #e5e7eb', padding: '16px 8px', display: 'flex', flexDirection: 'column', gap: '8px', overflowY: 'auto', maxHeight: '80vh', position: 'sticky', top: '64px', alignSelf: 'flex-start' }}>
+              {product.colors.map((color, i) => (
+                <button
+                  key={i}
+                  onClick={() => setSelectedColor(color)}
+                  style={{
+                    width: '74px', height: '74px', padding: 0, cursor: 'pointer', flexShrink: 0,
+                    backgroundColor: '#f0f0f0', overflow: 'hidden', border: 'none',
+                    outline: selectedColor?.colorName === color.colorName ? '2px solid #000' : '2px solid transparent',
+                    outlineOffset: '-2px', transition: 'opacity 0.2s',
+                  }}
+                  onMouseOver={(e) => { if (selectedColor?.colorName !== color.colorName) e.currentTarget.style.opacity = '0.7'; }}
+                  onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
+                >
+                  {color.imageUrl
+                    ? <img src={`${BASE_URL}${color.imageUrl}`} alt={color.colorName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    : <span style={{ fontSize: '20px', color: '#9ca3af' }}>{color.colorName.charAt(0)}</span>
+                  }
+                </button>
+              ))}
             </div>
 
-            {/* Sepete Ekle */}
-            <button
-              onClick={handleAddToCart}
-              disabled={!selectedColor}
-              className="w-full bg-black text-white py-4 text-sm tracking-widest uppercase hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+            {/* Büyük ana görsel */}
+            <div
+              style={{ flex: 1, aspectRatio: '1/1', backgroundColor: '#f5f5f5', overflow: 'hidden', cursor: mainImgSrc ? 'zoom-in' : 'default' }}
+              onClick={() => mainImgSrc && setLightbox(mainImgSrc)}
             >
-              SEPETE EKLE
-            </button>
+              {mainImgSrc ? (
+                <img src={mainImgSrc} alt={selectedColor?.colorName} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'opacity 0.2s' }} />
+              ) : (
+                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span style={{ fontSize: '120px', color: '#e5e7eb', fontWeight: '300' }}>{product.modelName.charAt(0)}</span>
+                </div>
+              )}
+            </div>
           </div>
+        )}
+
+        {/* SAĞ: Ürün bilgisi */}
+        <div style={{ padding: isMobile ? '24px 16px' : '48px 40px', borderLeft: isMobile ? 'none' : '1px solid #e5e7eb', display: 'flex', flexDirection: 'column', gap: '28px' }}>
+
+          {/* Model adı */}
+          <div>
+            <h1 style={{ fontSize: isMobile ? '22px' : '26px', fontWeight: '400', letterSpacing: '0.08em', color: '#000000', margin: '0 0 6px 0', textTransform: 'uppercase' }}>
+              {product.modelName}
+            </h1>
+            {selectedColor && (
+              <p style={{ fontSize: '13px', color: '#9ca3af', letterSpacing: '0.05em', margin: 0 }}>
+                {selectedColor.colorName}
+              </p>
+            )}
+          </div>
+
+          {/* Stokta Var */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#22c55e', display: 'inline-block' }} />
+            <span style={{ fontSize: '12px', letterSpacing: '0.08em', color: '#22c55e', fontWeight: '500' }}>STOKTA VAR</span>
+          </div>
+
+          {/* Fiyat */}
+          <div style={{ borderTop: '1px solid #e5e7eb', borderBottom: '1px solid #e5e7eb', padding: '20px 0' }}>
+            <span style={{ fontSize: '24px', fontWeight: '400', color: '#000000' }}>
+              {product.pricePerSeries.toLocaleString('tr-TR')} ₺
+            </span>
+            <span style={{ fontSize: '13px', color: '#9ca3af', marginLeft: '8px' }}>/ seri</span>
+          </div>
+
+          {/* Seri bilgisi */}
+          <div style={{ backgroundColor: '#fafafa', padding: '14px 16px', fontSize: '13px', color: '#6b7280', lineHeight: '1.6' }}>
+            <span style={{ color: '#000000', fontWeight: '500' }}>1 seri</span> = S, M (×2), L, XL — toplam 5 adet
+          </div>
+
+          {/* Seri sayısı */}
+          <div>
+            <p style={{ fontSize: '11px', letterSpacing: '0.1em', color: '#9ca3af', marginBottom: '12px', textTransform: 'uppercase' }}>Seri Sayısı</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0' }}>
+              <button
+                onClick={() => setSeriesCount(Math.max(1, seriesCount - 1))}
+                style={{ width: '44px', height: '44px', backgroundColor: '#ffffff', border: '1px solid #000000', fontSize: '20px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '300' }}
+              >−</button>
+              <span style={{ width: '60px', height: '44px', border: '1px solid #e5e7eb', borderLeft: 'none', borderRight: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: '400' }}>
+                {seriesCount}
+              </span>
+              <button
+                onClick={() => setSeriesCount(seriesCount + 1)}
+                style={{ width: '44px', height: '44px', backgroundColor: '#ffffff', border: '1px solid #000000', fontSize: '20px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '300' }}
+              >+</button>
+            </div>
+            {seriesCount > 1 && (
+              <p style={{ fontSize: '13px', color: '#6b7280', marginTop: '8px' }}>
+                Toplam: <strong style={{ color: '#000' }}>{(product.pricePerSeries * seriesCount).toLocaleString('tr-TR')} ₺</strong>
+              </p>
+            )}
+          </div>
+
+          {/* Sepete ekle */}
+          <button
+            onClick={handleAddToCart}
+            disabled={!selectedColor}
+            style={{
+              width: '100%', padding: '16px', backgroundColor: '#000000', color: '#ffffff',
+              border: 'none', fontSize: '13px', letterSpacing: '0.15em', fontWeight: '500',
+              cursor: selectedColor ? 'pointer' : 'not-allowed', textTransform: 'uppercase',
+              transition: 'background-color 0.2s', opacity: selectedColor ? 1 : 0.4,
+            }}
+            onMouseOver={(e) => { if (selectedColor) e.currentTarget.style.backgroundColor = '#333333'; }}
+            onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#000000'; }}
+          >
+            SEPETE EKLE
+          </button>
         </div>
       </div>
+
+      {/* Lightbox */}
+      {lightbox && (
+        <div
+          onClick={() => setLightbox(null)}
+          style={{
+            position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.92)', zIndex: 1000,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'zoom-out',
+          }}
+        >
+          <img
+            src={lightbox}
+            alt=""
+            style={{ maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain' }}
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            onClick={() => setLightbox(null)}
+            style={{ position: 'absolute', top: '20px', right: '24px', background: 'none', border: 'none', color: '#ffffff', fontSize: '32px', cursor: 'pointer', lineHeight: 1 }}
+          >×</button>
+        </div>
+      )}
     </div>
   );
 };
