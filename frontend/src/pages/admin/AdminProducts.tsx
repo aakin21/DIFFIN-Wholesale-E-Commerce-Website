@@ -1,7 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api, { BASE_URL } from '../../utils/api';
 import { Product, Category, ColorVariant } from '../../types';
+
+type ColorEntry = {
+  colorName: string;
+  file: File | null;
+  existingUrl?: string;
+  preview?: string;
+};
 
 const AdminProducts: React.FC = () => {
   const navigate = useNavigate();
@@ -20,9 +27,8 @@ const AdminProducts: React.FC = () => {
     modelName: '',
     pricePerSeries: 2250,
   });
-  const [colors, setColors] = useState<{ colorName: string; file: File | null }[]>([
-    { colorName: '', file: null }
-  ]);
+  const [colors, setColors] = useState<ColorEntry[]>([{ colorName: '', file: null }]);
+  const multiFileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!localStorage.getItem('adminToken')) {
@@ -96,6 +102,8 @@ const AdminProducts: React.FC = () => {
   };
 
   const handleRemoveColor = (index: number) => {
+    const entry = colors[index];
+    if (entry.preview) URL.revokeObjectURL(entry.preview);
     setColors(colors.filter((_, i) => i !== index));
   };
 
@@ -104,9 +112,24 @@ const AdminProducts: React.FC = () => {
     if (field === 'colorName') {
       newColors[index].colorName = value as string;
     } else {
-      newColors[index].file = value as File;
+      const file = value as File;
+      if (newColors[index].preview) URL.revokeObjectURL(newColors[index].preview!);
+      newColors[index].file = file;
+      newColors[index].existingUrl = undefined;
+      newColors[index].preview = URL.createObjectURL(file);
     }
     setColors(newColors);
+  };
+
+  const handleMultiFileSelect = (files: FileList) => {
+    const newEntries: ColorEntry[] = Array.from(files).map((file, i) => ({
+      colorName: '',
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+    // Replace empty placeholder if it's the only entry and has no file
+    const filtered = colors.filter(c => c.file !== null || c.existingUrl);
+    setColors([...filtered, ...newEntries]);
   };
 
   const uploadImage = async (file: File): Promise<string> => {
@@ -124,26 +147,27 @@ const AdminProducts: React.FC = () => {
     e.preventDefault();
 
     try {
-      const uploadedColors: ColorVariant[] = [];
+      const finalColors: ColorVariant[] = [];
+      let autoIndex = 1;
       for (const color of colors) {
-        if (color.colorName && color.file) {
+        if (color.existingUrl && !color.file) {
+          // Mevcut görsel, değiştirilmemiş
+          finalColors.push({ colorName: color.colorName || `Görsel ${autoIndex++}`, imageUrl: color.existingUrl });
+        } else if (color.file) {
           const imageUrl = await uploadImage(color.file);
-          uploadedColors.push({
-            colorName: color.colorName,
-            imageUrl,
-          });
+          finalColors.push({ colorName: color.colorName || `Görsel ${autoIndex++}`, imageUrl });
         }
       }
 
       if (editingProduct) {
         await api.put(`/products/${editingProduct._id}`, {
           ...productForm,
-          colors: uploadedColors.length > 0 ? uploadedColors : editingProduct.colors,
+          colors: finalColors,
         });
       } else {
         await api.post('/products', {
           ...productForm,
-          colors: uploadedColors,
+          colors: finalColors,
         });
       }
 
@@ -165,6 +189,12 @@ const AdminProducts: React.FC = () => {
       modelName: product.modelName,
       pricePerSeries: product.pricePerSeries,
     });
+    // Mevcut görselleri forma yükle
+    setColors(product.colors.map(c => ({
+      colorName: c.colorName,
+      file: null,
+      existingUrl: c.imageUrl,
+    })));
     setShowProductForm(true);
   };
 
@@ -491,65 +521,85 @@ const AdminProducts: React.FC = () => {
                 </div>
 
                 <div>
-                  <label style={{display: 'block', fontSize: '12px', fontWeight: '500', marginBottom: '8px'}}>Renkler</label>
+                  <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px'}}>
+                    <label style={{fontSize: '12px', fontWeight: '500'}}>Görseller</label>
+                    <button
+                      type="button"
+                      onClick={() => multiFileRef.current?.click()}
+                      style={{backgroundColor: '#000000', color: '#ffffff', padding: '6px 14px', fontSize: '11px', border: 'none', cursor: 'pointer', letterSpacing: '0.05em'}}
+                    >
+                      + TOPLU EKLE
+                    </button>
+                    <input
+                      ref={multiFileRef}
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      style={{display: 'none'}}
+                      onChange={(e) => e.target.files && handleMultiFileSelect(e.target.files)}
+                    />
+                  </div>
+
                   {colors.map((color, index) => (
-                    <div key={index} style={{display: 'flex', gap: '8px', marginBottom: '8px'}}>
+                    <div key={index} style={{display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '8px', padding: '8px', backgroundColor: '#ffffff', border: '1px solid #e5e7eb'}}>
+                      {/* Önizleme */}
+                      <div style={{width: '56px', height: '56px', flexShrink: 0, backgroundColor: '#f3f4f6', overflow: 'hidden'}}>
+                        {(color.preview || color.existingUrl) ? (
+                          <img
+                            src={color.preview || `${BASE_URL}${color.existingUrl}`}
+                            alt=""
+                            style={{width: '100%', height: '100%', objectFit: 'cover'}}
+                          />
+                        ) : (
+                          <label style={{width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '20px', color: '#9ca3af'}}>
+                            +
+                            <input
+                              type="file"
+                              accept="image/*"
+                              style={{display: 'none'}}
+                              onChange={(e) => e.target.files && handleColorChange(index, 'file', e.target.files[0])}
+                            />
+                          </label>
+                        )}
+                      </div>
+
+                      {/* Renk adı (opsiyonel) */}
                       <input
                         type="text"
-                        placeholder="Renk adı"
+                        placeholder="İsim (opsiyonel)"
                         value={color.colorName}
                         onChange={(e) => handleColorChange(index, 'colorName', e.target.value)}
-                        style={{
-                          flex: 1,
-                          padding: '12px',
-                          border: '1px solid #d1d5db',
-                          fontSize: '14px',
-                          outline: 'none'
-                        }}
+                        style={{flex: 1, padding: '8px 10px', border: '1px solid #d1d5db', fontSize: '13px', outline: 'none'}}
                       />
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => e.target.files && handleColorChange(index, 'file', e.target.files[0])}
-                        style={{
-                          flex: 1,
-                          padding: '12px',
-                          border: '1px solid #d1d5db',
-                          fontSize: '14px'
-                        }}
-                      />
-                      {colors.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveColor(index)}
-                          style={{
-                            backgroundColor: '#000000',
-                            color: '#ffffff',
-                            padding: '0 12px',
-                            border: 'none',
-                            cursor: 'pointer'
-                          }}
-                        >
-                          -
-                        </button>
-                      )}
+
+                      {/* Görsel değiştir */}
+                      <label style={{padding: '8px 10px', fontSize: '11px', backgroundColor: '#f3f4f6', border: '1px solid #e5e7eb', cursor: 'pointer', whiteSpace: 'nowrap'}}>
+                        Değiştir
+                        <input
+                          type="file"
+                          accept="image/*"
+                          style={{display: 'none'}}
+                          onChange={(e) => e.target.files && handleColorChange(index, 'file', e.target.files[0])}
+                        />
+                      </label>
+
+                      {/* Sil */}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveColor(index)}
+                        style={{backgroundColor: 'transparent', color: '#9ca3af', padding: '8px', border: 'none', cursor: 'pointer', fontSize: '16px', lineHeight: 1}}
+                      >
+                        ×
+                      </button>
                     </div>
                   ))}
+
                   <button
                     type="button"
                     onClick={handleAddColor}
-                    style={{
-                      width: '100%',
-                      backgroundColor: '#e5e7eb',
-                      color: '#000000',
-                      padding: '8px',
-                      fontSize: '12px',
-                      border: 'none',
-                      cursor: 'pointer',
-                      marginTop: '8px'
-                    }}
+                    style={{width: '100%', backgroundColor: '#f9fafb', color: '#6b7280', padding: '8px', fontSize: '12px', border: '1px dashed #d1d5db', cursor: 'pointer', marginTop: '4px'}}
                   >
-                    + RENK EKLE
+                    + Tek Görsel Ekle
                   </button>
                 </div>
 
