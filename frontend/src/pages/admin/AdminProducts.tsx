@@ -13,6 +13,8 @@ const AdminProducts: React.FC = () => {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   const [newCategory, setNewCategory] = useState('');
+  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [editCategoryName, setEditCategoryName] = useState('');
   const [productForm, setProductForm] = useState({
     categoryId: '',
     modelName: '',
@@ -58,6 +60,20 @@ const AdminProducts: React.FC = () => {
     } catch (error) {
       console.error('Error creating category:', error);
       alert('Kategori oluşturulurken bir hata oluştu!');
+    }
+  };
+
+  const handleUpdateCategory = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingCategory) return;
+    try {
+      await api.put(`/categories/${editingCategory._id}`, { name: editCategoryName });
+      setEditingCategory(null);
+      setEditCategoryName('');
+      fetchData();
+    } catch (error) {
+      console.error('Error updating category:', error);
+      alert('Kategori güncellenirken bir hata oluştu!');
     }
   };
 
@@ -325,27 +341,52 @@ const AdminProducts: React.FC = () => {
             <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
               {categories.map((category) => (
                 <div key={category._id} style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '16px',
+                  padding: '12px 16px',
                   backgroundColor: '#ffffff',
                   border: '1px solid #e5e7eb'
                 }}>
-                  <span style={{fontWeight: '500', fontSize: '14px'}}>{category.name}</span>
-                  <button
-                    onClick={() => handleDeleteCategory(category._id)}
-                    style={{
-                      color: '#000000',
-                      fontSize: '12px',
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                      textDecoration: 'underline'
-                    }}
-                  >
-                    Sil
-                  </button>
+                  {editingCategory?._id === category._id ? (
+                    <form onSubmit={handleUpdateCategory} style={{display: 'flex', gap: '8px', alignItems: 'center'}}>
+                      <input
+                        type="text"
+                        value={editCategoryName}
+                        onChange={(e) => setEditCategoryName(e.target.value)}
+                        autoFocus
+                        required
+                        style={{
+                          flex: 1,
+                          padding: '6px 10px',
+                          border: '1px solid #000000',
+                          fontSize: '14px',
+                          outline: 'none'
+                        }}
+                      />
+                      <button type="submit" style={{backgroundColor: '#000000', color: '#ffffff', padding: '6px 12px', fontSize: '11px', border: 'none', cursor: 'pointer'}}>
+                        Kaydet
+                      </button>
+                      <button type="button" onClick={() => setEditingCategory(null)} style={{backgroundColor: '#e5e7eb', color: '#000000', padding: '6px 12px', fontSize: '11px', border: 'none', cursor: 'pointer'}}>
+                        İptal
+                      </button>
+                    </form>
+                  ) : (
+                    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                      <span style={{fontWeight: '500', fontSize: '14px'}}>{category.name}</span>
+                      <div style={{display: 'flex', gap: '12px'}}>
+                        <button
+                          onClick={() => { setEditingCategory(category); setEditCategoryName(category.name); }}
+                          style={{color: '#000000', fontSize: '12px', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline'}}
+                        >
+                          Düzenle
+                        </button>
+                        <button
+                          onClick={() => handleDeleteCategory(category._id)}
+                          style={{color: '#6b7280', fontSize: '12px', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline'}}
+                        >
+                          Sil
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
