@@ -13,6 +13,8 @@ const Footer: React.FC = () => {
 
   return (
     <footer style={{ backgroundColor: '#000000', color: '#ffffff' }}>
+      {/* Beyazdan Siyaha Gradient */}
+      <div style={{ height: '150px', background: 'linear-gradient(to bottom, #ffffff, #000000)' }} />
       {/* HAKKIMIZDA */}
       <div style={{ padding: isMobile ? '40px 16px' : '80px 24px', borderBottom: '1px solid #2d2d2d' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
