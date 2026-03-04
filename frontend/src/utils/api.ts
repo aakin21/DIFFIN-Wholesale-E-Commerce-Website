@@ -22,6 +22,10 @@ api.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  // FormData gönderiminde Content-Type'ı sil — boundary'yi tarayıcı otomatik ayarlar
+  if (config.data instanceof FormData) {
+    delete config.headers['Content-Type'];
+  }
   return config;
 });
 

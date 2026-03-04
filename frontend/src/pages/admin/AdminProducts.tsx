@@ -136,9 +136,7 @@ const AdminProducts: React.FC = () => {
     const formData = new FormData();
     formData.append('image', file);
 
-    const response = await api.post('/products/upload', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    const response = await api.post('/products/upload', formData);
 
     return response.data.imageUrl;
   };

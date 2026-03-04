@@ -3,11 +3,9 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api, { getImageUrl } from '../utils/api';
 import { Category, Product } from '../types';
-import { useFavorites } from '../contexts/FavoritesContext';
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
-  const { toggleFavorite, isFavorited } = useFavorites();
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -132,8 +130,8 @@ const HomePage: React.FC = () => {
                     {/* Random Ürün */}
                     {randomItem && (
                       <div>
-                        <Link to={`/product/${randomItem.productId}`} style={{ textDecoration: 'none', display: 'block' }}>
-                          <div style={{ position: 'relative', backgroundColor: '#ffffff', aspectRatio: '3/4', overflow: 'hidden', marginBottom: '10px' }}>
+                        <Link to={`/products/${category._id}`} style={{ textDecoration: 'none', display: 'block' }}>
+                          <div style={{ backgroundColor: '#ffffff', aspectRatio: '3/4', overflow: 'hidden', marginBottom: '10px' }}>
                             <img
                               src={getImageUrl(randomItem.imageUrl)}
                               alt={randomItem.modelName}
@@ -141,18 +139,6 @@ const HomePage: React.FC = () => {
                               onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
                               onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
                             />
-                            {/* Favori butonu */}
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                toggleFavorite({ productId: randomItem.productId, modelName: randomItem.modelName, imageUrl: randomItem.imageUrl, pricePerSeries: randomItem.pricePerSeries, colorName: randomItem.colorName });
-                              }}
-                              style={{ position: 'absolute', top: '0', right: '0', background: 'transparent', border: 'none', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}
-                            >
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill={isFavorited(randomItem.productId) ? '#000' : 'none'} stroke="#000" strokeWidth="1.5">
-                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                              </svg>
-                            </button>
                           </div>
                           <p style={{ fontSize: isMobile ? '12px' : '13px', letterSpacing: '0.06em', color: '#000', marginBottom: '4px', textAlign: 'center' }}>
                             DIFFIN — {randomItem.modelName}
