@@ -43,7 +43,7 @@ const HomePage: React.FC = () => {
 
   // Her kategori için random bir ürün ve renk seç (products yüklenince bir kez hesaplanır)
   const categoryRandomItems = useMemo(() => {
-    const map: Record<string, { productId: string; modelName: string; colorName: string; imageUrl: string } | null> = {};
+    const map: Record<string, { productId: string; modelName: string; colorName: string; imageUrl: string; pricePerSeries: number } | null> = {};
     categories.forEach(category => {
       const categoryProducts = products.filter(product => {
         const id = product.categoryId && typeof product.categoryId === 'object'
