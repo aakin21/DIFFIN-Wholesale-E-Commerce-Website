@@ -97,39 +97,67 @@ const AdminProducts: React.FC = () => {
     }
   };
 
+  const createThumbnail = (file: File): Promise<string> =>
+    new Promise((resolve) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        const max = 300;
+        const ratio = Math.min(max / img.width, max / img.height, 1);
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width * ratio;
+        canvas.height = img.height * ratio;
+        canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(url);
+        resolve(canvas.toDataURL('image/jpeg', 0.75));
+      };
+      img.onerror = () => { resolve(url); };
+      img.src = url;
+    });
+
   const handleAddColor = () => {
     setColors([...colors, { colorName: '', file: null }]);
   };
 
   const handleRemoveColor = (index: number) => {
-    const entry = colors[index];
-    if (entry.preview) URL.revokeObjectURL(entry.preview);
     setColors(colors.filter((_, i) => i !== index));
   };
 
-  const handleColorChange = (index: number, field: string, value: string | File) => {
+  const handleColorChange = async (index: number, field: string, value: string | File) => {
     const newColors = [...colors];
     if (field === 'colorName') {
       newColors[index].colorName = value as string;
+      setColors(newColors);
     } else {
       const file = value as File;
-      if (newColors[index].preview) URL.revokeObjectURL(newColors[index].preview!);
       newColors[index].file = file;
       newColors[index].existingUrl = undefined;
-      newColors[index].preview = URL.createObjectURL(file);
+      newColors[index].preview = undefined;
+      setColors([...newColors]);
+      const thumb = await createThumbnail(file);
+      setColors(prev => {
+        const updated = [...prev];
+        updated[index] = { ...updated[index], preview: thumb };
+        return updated;
+      });
     }
-    setColors(newColors);
   };
 
-  const handleMultiFileSelect = (files: FileList) => {
-    const newEntries: ColorEntry[] = Array.from(files).map((file, i) => ({
-      colorName: '',
-      file,
-      preview: URL.createObjectURL(file),
-    }));
-    // Replace empty placeholder if it's the only entry and has no file
+  const handleMultiFileSelect = async (files: FileList) => {
+    const fileArr = Array.from(files);
     const filtered = colors.filter(c => c.file !== null || c.existingUrl);
+    const newEntries: ColorEntry[] = fileArr.map(file => ({ colorName: '', file, preview: undefined }));
     setColors([...filtered, ...newEntries]);
+    // Thumbnail'leri sırayla oluştur (kasma olmasın)
+    for (let i = 0; i < fileArr.length; i++) {
+      const thumb = await createThumbnail(fileArr[i]);
+      setColors(prev => {
+        const updated = [...prev];
+        const idx = filtered.length + i;
+        if (updated[idx]) updated[idx] = { ...updated[idx], preview: thumb };
+        return updated;
+      });
+    }
   };
 
   const uploadImage = async (file: File): Promise<string> => {
