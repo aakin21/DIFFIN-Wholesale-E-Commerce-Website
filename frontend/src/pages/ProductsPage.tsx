@@ -84,7 +84,7 @@ const ProductsPage: React.FC = () => {
                 colorName: product.colors.length > 0 ? product.colors[0].colorName : '',
               };
               return (
-                <div key={product._id}>
+                <div key={product._id} style={{ textAlign: 'center' }}>
                   <Link to={`/product/${product._id}`} style={{ textDecoration: 'none', display: 'block' }}>
                     {/* Görsel */}
                     <div style={{ position: 'relative', aspectRatio: '3/4', backgroundColor: '#ffffff', overflow: 'hidden', marginBottom: '10px' }}>

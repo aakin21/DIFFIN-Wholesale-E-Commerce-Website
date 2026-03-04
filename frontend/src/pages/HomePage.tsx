@@ -104,7 +104,7 @@ const HomePage: React.FC = () => {
               {categories.map((category) => {
                 const randomItem = categoryRandomItems[category._id];
                 return (
-                  <div key={category._id}>
+                  <div key={category._id} style={{ textAlign: 'center' }}>
                     {/* Kategori Başlığı */}
                     <Link
                       to={`/products/${category._id}`}
