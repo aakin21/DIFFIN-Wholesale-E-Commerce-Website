@@ -61,7 +61,7 @@ const FavoritesPage: React.FC = () => {
                     />
                     <button
                       onClick={(e) => { e.preventDefault(); toggleFavorite(item); }}
-                      style={{ position: 'absolute', top: '0', right: '0', background: 'transparent', border: 'none', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}
+                      style={{ position: 'absolute', top: '0', right: '0', background: 'transparent', border: 'none', padding: '10px', cursor: 'pointer', lineHeight: 0 }}
                     >
                       <HeartIcon filled={isFavorited(item.productId)} />
                     </button>

@@ -69,14 +69,13 @@ const HomePage: React.FC = () => {
       {/* Ürünler - Beyaz arka plan */}
       <section style={{ backgroundColor: '#ffffff' }}>
 
-        {/* Siyah başlık bandı */}
-        <div style={{ backgroundColor: '#000000', padding: isMobile ? '20px 16px' : '32px 40px' }}>
+        {/* Başlık */}
+        <div style={{ padding: isMobile ? '28px 16px 20px' : '52px 24px 36px', textAlign: 'center' }}>
           <h2 style={{
-            fontSize: isMobile ? '11px' : '13px',
+            fontSize: isMobile ? '13px' : '15px',
             fontWeight: '300',
-            letterSpacing: '0.45em',
-            textAlign: 'center',
-            color: '#ffffff',
+            letterSpacing: '0.35em',
+            color: '#000000',
             margin: 0,
             textTransform: 'uppercase'
           }}>
@@ -84,8 +83,8 @@ const HomePage: React.FC = () => {
           </h2>
         </div>
 
-        {/* Dekoratif ince çizgi */}
-        <div style={{ height: '1px', backgroundColor: '#e5e7eb' }} />
+        {/* İnce ayırıcı çizgi */}
+        <div style={{ height: '1px', backgroundColor: '#e5e7eb', margin: '0' }} />
 
         {loading ? (
           <div style={{ display: 'flex', justifyContent: 'center', padding: '80px 0' }}>

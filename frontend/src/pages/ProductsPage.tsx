@@ -104,7 +104,7 @@ const ProductsPage: React.FC = () => {
                       {/* Favori butonu */}
                       <button
                         onClick={(e) => { e.preventDefault(); toggleFavorite(favoritePayload); }}
-                        style={{ position: 'absolute', top: '0', right: '0', background: 'transparent', border: 'none', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}
+                        style={{ position: 'absolute', top: '0', right: '0', background: 'transparent', border: 'none', padding: '10px', cursor: 'pointer', lineHeight: 0 }}
                       >
                         <svg width="14" height="14" viewBox="0 0 24 24" fill={isFavorited(product._id) ? '#000' : 'none'} stroke="#000" strokeWidth="1.5">
                           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
