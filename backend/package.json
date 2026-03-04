@@ -26,9 +26,11 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.0.1",
     "multer": "^2.0.2",
+    "sharp": "^0.34.5",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
+    "@types/sharp": "^0.31.1",
     "nodemon": "^3.1.11",
     "ts-node": "^10.9.2"
   }

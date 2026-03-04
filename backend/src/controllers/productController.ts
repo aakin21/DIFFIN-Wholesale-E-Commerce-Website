@@ -2,6 +2,7 @@ import { Response, Request } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import Product from '../models/Product';
 import { uploadToCloudinary } from '../middleware/upload';
+import sharp from 'sharp';
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
@@ -88,11 +89,17 @@ export const deleteProduct = async (req: AuthRequest, res: Response) => {
 export const uploadProductImage = async (req: AuthRequest, res: Response) => {
   try {
     if (!req.file) {
-      console.error('No file in request. Content-Type:', req.headers['content-type']);
       return res.status(400).json({ message: 'No file uploaded' });
     }
+
+    // 8MB altına compress et (Cloudinary free plan limiti 10MB)
+    const compressed = await sharp(req.file.buffer)
+      .resize(2400, 2400, { fit: 'inside', withoutEnlargement: true })
+      .jpeg({ quality: 88 })
+      .toBuffer();
+
     const filename = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    const imageUrl = await uploadToCloudinary(req.file.buffer, filename);
+    const imageUrl = await uploadToCloudinary(compressed, filename);
     res.json({ imageUrl });
   } catch (error: any) {
     console.error('Upload image error:', error?.message || error);
