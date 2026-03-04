@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api, { BASE_URL } from '../../utils/api';
+import api, { getImageUrl } from '../../utils/api';
 import { Product, Category, ColorVariant } from '../../types';
 
 type ColorEntry = {
@@ -546,7 +546,7 @@ const AdminProducts: React.FC = () => {
                       <div style={{width: '56px', height: '56px', flexShrink: 0, backgroundColor: '#f3f4f6', overflow: 'hidden'}}>
                         {(color.preview || color.existingUrl) ? (
                           <img
-                            src={color.preview || `${BASE_URL}${color.existingUrl}`}
+                            src={color.preview || getImageUrl(color.existingUrl || '')}
                             alt=""
                             style={{width: '100%', height: '100%', objectFit: 'cover'}}
                           />
@@ -667,7 +667,7 @@ const AdminProducts: React.FC = () => {
                 <div style={{aspectRatio: '1/1', backgroundColor: '#f3f4f6'}}>
                   {product.colors.length > 0 && product.colors[0].imageUrl ? (
                     <img
-                      src={`${BASE_URL}${product.colors[0].imageUrl}`}
+                      src={getImageUrl(product.colors[0].imageUrl)}
                       alt={product.modelName}
                       style={{width: '100%', height: '100%', objectFit: 'cover'}}
                     />

@@ -1,6 +1,7 @@
 import { Response, Request } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import Product from '../models/Product';
+import { uploadToCloudinary } from '../middleware/upload';
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
@@ -90,7 +91,8 @@ export const uploadProductImage = async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ message: 'No file uploaded' });
     }
 
-    const imageUrl = `/uploads/${req.file.filename}`;
+    const filename = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+    const imageUrl = await uploadToCloudinary(req.file.buffer, filename);
     res.json({ imageUrl });
   } catch (error) {
     console.error('Upload image error:', error);

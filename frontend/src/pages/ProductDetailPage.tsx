@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import api, { BASE_URL } from '../utils/api';
+import api, { getImageUrl } from '../utils/api';
 import { Product, ColorVariant } from '../types';
 import { useCart } from '../contexts/CartContext';
 
@@ -71,7 +71,7 @@ const ProductDetailPage: React.FC = () => {
     );
   }
 
-  const mainImgSrc = selectedColor?.imageUrl ? `${BASE_URL}${selectedColor.imageUrl}` : null;
+  const mainImgSrc = selectedColor?.imageUrl ? getImageUrl(selectedColor.imageUrl) : null;
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '60vh' }}>
@@ -128,7 +128,7 @@ const ProductDetailPage: React.FC = () => {
                     }}
                   >
                     {color.imageUrl
-                      ? <img src={`${BASE_URL}${color.imageUrl}`} alt={color.colorName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ? <img src={getImageUrl(color.imageUrl)} alt={color.colorName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       : <span style={{ fontSize: '20px', color: '#9ca3af' }}>{color.colorName.charAt(0)}</span>
                     }
                   </button>
@@ -155,7 +155,7 @@ const ProductDetailPage: React.FC = () => {
                   onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
                 >
                   {color.imageUrl
-                    ? <img src={`${BASE_URL}${color.imageUrl}`} alt={color.colorName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ? <img src={getImageUrl(color.imageUrl)} alt={color.colorName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     : <span style={{ fontSize: '20px', color: '#9ca3af' }}>{color.colorName.charAt(0)}</span>
                   }
                 </button>

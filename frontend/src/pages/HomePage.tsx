@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import api, { BASE_URL } from '../utils/api';
+import api, { getImageUrl } from '../utils/api';
 import { Category, Product } from '../types';
 
 const HomePage: React.FC = () => {
@@ -142,7 +142,7 @@ const HomePage: React.FC = () => {
                           marginBottom: '12px'
                         }}>
                           <img
-                            src={`${BASE_URL}${randomItem.imageUrl}`}
+                            src={getImageUrl(randomItem.imageUrl)}
                             alt={`${randomItem.modelName} - ${randomItem.colorName}`}
                             style={{
                               width: '100%',

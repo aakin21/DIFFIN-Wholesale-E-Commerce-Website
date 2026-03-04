@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import api, { BASE_URL } from '../utils/api';
+import api, { getImageUrl } from '../utils/api';
 import { Product, Category } from '../types';
 
 const ProductsPage: React.FC = () => {
@@ -68,7 +68,7 @@ const ProductsPage: React.FC = () => {
                 <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
                   {product.colors.length > 0 && product.colors[0].imageUrl ? (
                     <img
-                      src={`${BASE_URL}${product.colors[0].imageUrl}`}
+                      src={getImageUrl(product.colors[0].imageUrl)}
                       alt={product.modelName}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     />
