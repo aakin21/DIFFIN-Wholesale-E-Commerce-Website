@@ -94,6 +94,7 @@ const ProductDetailPage: React.FC = () => {
         gridTemplateColumns: isMobile ? '1fr' : '60% 40%',
         maxWidth: '1300px',
         margin: '0 auto',
+        overflowX: 'hidden',
       }}>
 
         {/* SOL: Görseller */}
@@ -102,7 +103,7 @@ const ProductDetailPage: React.FC = () => {
           <div style={{ padding: '0' }}>
             {/* Ana görsel */}
             <div
-              style={{ aspectRatio: '3/4', backgroundColor: '#f5f5f5', overflow: 'hidden', cursor: mainImgSrc ? 'zoom-in' : 'default' }}
+              style={{ aspectRatio: '3/4', maxHeight: '60vh', backgroundColor: '#f5f5f5', overflow: 'hidden', cursor: mainImgSrc ? 'zoom-in' : 'default' }}
               onClick={() => mainImgSrc && setLightbox(mainImgSrc)}
             >
               {mainImgSrc ? (
@@ -115,7 +116,7 @@ const ProductDetailPage: React.FC = () => {
             </div>
             {/* Thumbnail şeridi */}
             {product.colors.length > 1 && (
-              <div style={{ display: 'flex', gap: '4px', padding: '4px', overflowX: 'auto', backgroundColor: '#fafafa' }}>
+              <div className="no-scrollbar" style={{ display: 'flex', gap: '4px', padding: '8px 4px', overflowX: 'auto', backgroundColor: '#fafafa', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
                 {product.colors.map((color, i) => (
                   <button
                     key={i}
@@ -179,7 +180,7 @@ const ProductDetailPage: React.FC = () => {
         )}
 
         {/* SAĞ: Ürün bilgisi */}
-        <div style={{ padding: isMobile ? '24px 16px' : '48px 40px', borderLeft: isMobile ? 'none' : '1px solid #e5e7eb', display: 'flex', flexDirection: 'column', gap: '28px' }}>
+        <div style={{ padding: isMobile ? '24px 16px' : '48px 40px', borderLeft: isMobile ? 'none' : '1px solid #e5e7eb', display: 'flex', flexDirection: 'column', gap: '28px', overflowX: 'hidden', minWidth: 0 }}>
 
           {/* Model adı */}
           <div>
