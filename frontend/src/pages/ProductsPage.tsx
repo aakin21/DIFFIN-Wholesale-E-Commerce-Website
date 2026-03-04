@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api, { getImageUrl } from '../utils/api';
@@ -13,6 +13,16 @@ const ProductsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const { toggleFavorite, isFavorited } = useFavorites();
+
+  const useMemo_randomColors = useMemo(() => {
+    const map: Record<string, { imageUrl: string; colorName: string } | undefined> = {};
+    products.forEach(product => {
+      if (product.colors.length === 0) return;
+      const idx = Math.floor(Math.random() * product.colors.length);
+      map[product._id] = { imageUrl: product.colors[idx].imageUrl, colorName: product.colors[idx].colorName };
+    });
+    return map;
+  }, [products]);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -75,13 +85,14 @@ const ProductsPage: React.FC = () => {
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: isMobile ? '24px 16px' : '40px 32px' }}>
             {products.map((product) => {
-              const img = product.colors.length > 0 ? product.colors[0].imageUrl : '';
+              const randomColor = useMemo_randomColors[product._id];
+              const img = randomColor?.imageUrl || '';
               const favoritePayload = {
                 productId: product._id,
                 modelName: product.modelName,
                 imageUrl: img,
                 pricePerSeries: product.pricePerSeries,
-                colorName: product.colors.length > 0 ? product.colors[0].colorName : '',
+                colorName: randomColor?.colorName || '',
               };
               return (
                 <div key={product._id} style={{ textAlign: 'center' }}>
