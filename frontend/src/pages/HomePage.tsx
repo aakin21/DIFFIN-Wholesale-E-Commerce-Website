@@ -66,95 +66,98 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen">
-      {/* TOPTAN ÜRÜNLERİMİZ - Beyaz arkaplan */}
-      <section style={{padding: isMobile ? '32px 16px' : '64px 24px', backgroundColor: '#ffffff'}}>
-        <div style={{maxWidth: '1400px', margin: '0 auto'}}>
+      {/* Ürünler - Beyaz arka plan */}
+      <section style={{ backgroundColor: '#ffffff' }}>
+
+        {/* Siyah başlık bandı */}
+        <div style={{ backgroundColor: '#000000', padding: isMobile ? '20px 16px' : '32px 40px' }}>
           <h2 style={{
-            fontSize: isMobile ? '24px' : '36px',
+            fontSize: isMobile ? '11px' : '13px',
             fontWeight: '300',
-            letterSpacing: isMobile ? '0.1em' : '0.15em',
-            marginBottom: isMobile ? '40px' : '80px',
+            letterSpacing: '0.45em',
             textAlign: 'center',
-            color: '#000000'
+            color: '#ffffff',
+            margin: 0,
+            textTransform: 'uppercase'
           }}>
-{t('home.wholesaleProducts')}
+            {t('home.wholesaleProducts')}
           </h2>
+        </div>
 
-          {loading ? (
-            <div style={{display: 'flex', justifyContent: 'center', padding: '48px 0'}}>
-              <div style={{
-                width: '32px',
-                height: '32px',
-                border: '2px solid #000000',
-                borderTopColor: 'transparent',
-                borderRadius: '50%',
-                animation: 'spin 1s linear infinite'
-              }}></div>
-            </div>
-          ) : categories.length === 0 ? (
-            <p style={{textAlign: 'center', color: '#9ca3af'}}>{t('home.noCategories')}</p>
-          ) : (
+        {/* Dekoratif ince çizgi */}
+        <div style={{ height: '1px', backgroundColor: '#e5e7eb' }} />
+
+        {loading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '80px 0' }}>
             <div style={{
-              display: 'grid',
-              gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
-              gap: isMobile ? '32px' : '40px'
-            }}>
-              {categories.map((category) => {
-                const randomItem = categoryRandomItems[category._id];
-                return (
-                  <div key={category._id} style={{ textAlign: 'center' }}>
-                    {/* Kategori Başlığı */}
-                    <Link
-                      to={`/products/${category._id}`}
-                      style={{
-                        display: 'block',
-                        textAlign: 'center',
-                        marginBottom: '24px',
-                        textDecoration: 'none'
-                      }}
-                    >
-                      <h3 style={{
-                        fontSize: isMobile ? '16px' : '18px',
-                        fontWeight: '300',
-                        letterSpacing: isMobile ? '0.08em' : '0.12em',
-                        color: '#000000',
-                        transition: 'opacity 0.3s'
-                      }}
-                      onMouseOver={(e) => e.currentTarget.style.opacity = '0.6'}
-                      onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
-                      >
-                        {category.name.toUpperCase()}
-                      </h3>
-                    </Link>
+              width: '32px', height: '32px',
+              border: '2px solid #000000', borderTopColor: 'transparent',
+              borderRadius: '50%', animation: 'spin 1s linear infinite'
+            }} />
+          </div>
+        ) : categories.length === 0 ? (
+          <p style={{ textAlign: 'center', color: '#9ca3af', padding: '80px 0' }}>{t('home.noCategories')}</p>
+        ) : (
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+            gap: '1px',
+            backgroundColor: '#e5e7eb',
+            borderBottom: '1px solid #e5e7eb'
+          }}>
+            {categories.map((category) => {
+              const randomItem = categoryRandomItems[category._id];
+              return (
+                <div key={category._id} style={{ backgroundColor: '#ffffff' }}>
+                  <Link to={`/products/${category._id}`} style={{ textDecoration: 'none', display: 'block', padding: isMobile ? '20px 12px 16px' : '32px 24px 24px' }}>
 
-                    {/* Random Ürün */}
-                    {randomItem && (
-                      <div>
-                        <Link to={`/products/${category._id}`} style={{ textDecoration: 'none', display: 'block' }}>
-                          <div style={{ backgroundColor: '#ffffff', aspectRatio: '3/4', overflow: 'hidden', marginBottom: '10px' }}>
-                            <img
-                              src={getImageUrl(randomItem.imageUrl)}
-                              alt={randomItem.modelName}
-                              style={{ width: '100%', height: '100%', objectFit: 'contain', transition: 'transform 0.4s' }}
-                              onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
-                              onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                            />
-                          </div>
-                          <p style={{ fontSize: isMobile ? '12px' : '13px', letterSpacing: '0.06em', color: '#000', marginBottom: '4px', textAlign: 'center' }}>
-                            DIFFIN — {randomItem.modelName}
-                          </p>
-                          <p style={{ fontSize: isMobile ? '11px' : '12px', color: '#6b7280', textAlign: 'center' }}>
-                            {randomItem.pricePerSeries.toLocaleString('tr-TR')} ₺ / adet
-                          </p>
-                        </Link>
+                    {/* Görsel */}
+                    {randomItem ? (
+                      <div style={{ aspectRatio: '3/4', overflow: 'hidden', marginBottom: isMobile ? '12px' : '16px' }}>
+                        <img
+                          src={getImageUrl(randomItem.imageUrl)}
+                          alt={randomItem.modelName}
+                          style={{ width: '100%', height: '100%', objectFit: 'contain', transition: 'transform 0.5s' }}
+                          onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.04)'}
+                          onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                        />
+                      </div>
+                    ) : (
+                      <div style={{ aspectRatio: '3/4', backgroundColor: '#f5f5f5', marginBottom: isMobile ? '12px' : '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span style={{ fontSize: '32px', color: '#d1d5db', fontWeight: '200' }}>{category.name.charAt(0).toUpperCase()}</span>
                       </div>
                     )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
+
+                    {/* Kategori adı */}
+                    <h3 style={{
+                      fontSize: isMobile ? '10px' : '11px',
+                      fontWeight: '400',
+                      letterSpacing: '0.2em',
+                      color: '#000000',
+                      textAlign: 'center',
+                      marginBottom: '4px',
+                      textTransform: 'uppercase'
+                    }}>
+                      {category.name}
+                    </h3>
+
+                    {/* Model ve fiyat */}
+                    {randomItem && (
+                      <>
+                        <p style={{ fontSize: isMobile ? '11px' : '12px', letterSpacing: '0.04em', color: '#000', textAlign: 'center', marginBottom: '2px' }}>
+                          DIFFIN — {randomItem.modelName}
+                        </p>
+                        <p style={{ fontSize: isMobile ? '10px' : '11px', color: '#9ca3af', textAlign: 'center' }}>
+                          {randomItem.pricePerSeries.toLocaleString('tr-TR')} ₺ / adet
+                        </p>
+                      </>
+                    )}
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </section>
 
       {/* 2 Buton */}

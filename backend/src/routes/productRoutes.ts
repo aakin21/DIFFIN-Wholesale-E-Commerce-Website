@@ -20,7 +20,15 @@ router.get('/:id', getProductById);
 router.post('/', authMiddleware, createProduct);
 router.put('/:id', authMiddleware, updateProduct);
 router.delete('/:id', authMiddleware, deleteProduct);
-router.post('/upload', authMiddleware, upload.single('image'), uploadProductImage);
+router.post('/upload', authMiddleware, (req, res, next) => {
+  upload.single('image')(req, res, (err: any) => {
+    if (err) {
+      console.error('Multer error:', err.message);
+      return res.status(400).json({ message: err.message || 'File upload error' });
+    }
+    next();
+  });
+}, uploadProductImage);
 router.post('/toggle-featured', authMiddleware, toggleFeatured);
 
 export default router;

@@ -27,9 +27,12 @@ const Header: React.FC = () => {
   return (
     <header style={{
       backgroundColor: '#000000',
-      position: 'sticky',
+      position: 'fixed',
       top: 0,
-      zIndex: 50
+      left: 0,
+      right: 0,
+      width: '100%',
+      zIndex: 100
     }}>
       <div style={{maxWidth: '1400px', margin: '0 auto', padding: isMobile ? '12px 16px' : '16px 24px'}}>
         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>

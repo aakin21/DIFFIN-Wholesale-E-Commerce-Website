@@ -88,15 +88,15 @@ export const deleteProduct = async (req: AuthRequest, res: Response) => {
 export const uploadProductImage = async (req: AuthRequest, res: Response) => {
   try {
     if (!req.file) {
+      console.error('No file in request. Content-Type:', req.headers['content-type']);
       return res.status(400).json({ message: 'No file uploaded' });
     }
-
     const filename = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
     const imageUrl = await uploadToCloudinary(req.file.buffer, filename);
     res.json({ imageUrl });
-  } catch (error) {
-    console.error('Upload image error:', error);
-    res.status(500).json({ message: 'Server error' });
+  } catch (error: any) {
+    console.error('Upload image error:', error?.message || error);
+    res.status(500).json({ message: error?.message || 'Server error' });
   }
 };
 

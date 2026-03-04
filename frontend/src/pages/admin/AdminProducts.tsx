@@ -135,10 +135,18 @@ const AdminProducts: React.FC = () => {
   const uploadImage = async (file: File): Promise<string> => {
     const formData = new FormData();
     formData.append('image', file);
-
-    const response = await api.post('/products/upload', formData);
-
-    return response.data.imageUrl;
+    const token = localStorage.getItem('adminToken');
+    const apiUrl = (import.meta.env.VITE_API_URL as string) || 'http://localhost:5000/api';
+    const res = await fetch(`${apiUrl}/products/upload`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token || ''}` },
+      body: formData,
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ message: 'Upload failed' }));
+      throw new Error(err.message || 'Upload failed');
+    }
+    return (await res.json()).imageUrl;
   };
 
   const handleCreateProduct = async (e: React.FormEvent) => {

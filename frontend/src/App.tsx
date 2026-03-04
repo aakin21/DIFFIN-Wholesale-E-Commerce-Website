@@ -38,8 +38,10 @@ function App() {
             element={
               <>
                 <Header />
-                <HomePage />
-                <Footer />
+                <div style={{ paddingTop: '64px' }}>
+                  <HomePage />
+                  <Footer />
+                </div>
               </>
             }
           />
@@ -48,8 +50,10 @@ function App() {
             element={
               <>
                 <Header />
-                <ProductsPage />
-                <Footer />
+                <div style={{ paddingTop: '64px' }}>
+                  <ProductsPage />
+                  <Footer />
+                </div>
               </>
             }
           />
@@ -58,8 +62,10 @@ function App() {
             element={
               <>
                 <Header />
-                <ProductDetailPage />
-                <Footer />
+                <div style={{ paddingTop: '64px' }}>
+                  <ProductDetailPage />
+                  <Footer />
+                </div>
               </>
             }
           />
@@ -68,8 +74,10 @@ function App() {
             element={
               <>
                 <Header />
-                <CartPage />
-                <Footer />
+                <div style={{ paddingTop: '64px' }}>
+                  <CartPage />
+                  <Footer />
+                </div>
               </>
             }
           />
@@ -78,8 +86,10 @@ function App() {
             element={
               <>
                 <Header />
-                <AccountPage />
-                <Footer />
+                <div style={{ paddingTop: '64px' }}>
+                  <AccountPage />
+                  <Footer />
+                </div>
               </>
             }
           />
@@ -88,8 +98,10 @@ function App() {
             element={
               <>
                 <Header />
-                <CreateBrandPage />
-                <Footer />
+                <div style={{ paddingTop: '64px' }}>
+                  <CreateBrandPage />
+                  <Footer />
+                </div>
               </>
             }
           />
@@ -98,8 +110,10 @@ function App() {
             element={
               <>
                 <Header />
-                <CustomProductPage />
-                <Footer />
+                <div style={{ paddingTop: '64px' }}>
+                  <CustomProductPage />
+                  <Footer />
+                </div>
               </>
             }
           />
@@ -108,8 +122,10 @@ function App() {
             element={
               <>
                 <Header />
-                <WhoWeArePage />
-                <Footer />
+                <div style={{ paddingTop: '64px' }}>
+                  <WhoWeArePage />
+                  <Footer />
+                </div>
               </>
             }
           />
@@ -119,8 +135,10 @@ function App() {
             element={
               <>
                 <Header />
-                <FavoritesPage />
-                <Footer />
+                <div style={{ paddingTop: '64px' }}>
+                  <FavoritesPage />
+                  <Footer />
+                </div>
               </>
             }
           />
