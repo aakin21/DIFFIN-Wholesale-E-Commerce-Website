@@ -140,7 +140,7 @@ const ProductDetailPage: React.FC = () => {
           /* Desktop: sol ince thumbnail sütunu + sağda büyük görsel */
           <div style={{ display: 'flex', gap: '0' }}>
             {/* Thumbnail sütunu */}
-            <div style={{ width: '90px', flexShrink: 0, borderRight: '1px solid #e5e7eb', padding: '16px 8px', display: 'flex', flexDirection: 'column', gap: '8px', overflowY: 'auto', maxHeight: '80vh', position: 'sticky', top: '64px', alignSelf: 'flex-start' }}>
+            <div className="no-scrollbar" style={{ width: '90px', flexShrink: 0, borderRight: '1px solid #e5e7eb', padding: '16px 8px', display: 'flex', flexDirection: 'column', gap: '8px', overflowY: 'auto', maxHeight: '80vh', position: 'sticky', top: '64px', alignSelf: 'flex-start' }}>
               {product.colors.map((color, i) => (
                 <button
                   key={i}
