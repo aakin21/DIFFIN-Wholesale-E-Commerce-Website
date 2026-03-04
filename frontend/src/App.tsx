@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './contexts/CartContext';
 import { UserProvider } from './contexts/UserContext';
+import { FavoritesProvider } from './contexts/FavoritesContext';
 
 // Components
 import Header from './components/Header';
@@ -16,6 +17,7 @@ import AccountPage from './pages/AccountPage';
 import CreateBrandPage from './pages/CreateBrandPage';
 import CustomProductPage from './pages/CustomProductPage';
 import WhoWeArePage from './pages/WhoWeArePage';
+import FavoritesPage from './pages/FavoritesPage';
 
 // Admin Pages
 import AdminLoginPage from './pages/admin/AdminLoginPage';
@@ -26,6 +28,7 @@ import AdminProducts from './pages/admin/AdminProducts';
 function App() {
   return (
     <UserProvider>
+      <FavoritesProvider>
       <CartProvider>
         <Router>
         <Routes>
@@ -111,6 +114,17 @@ function App() {
             }
           />
 
+          <Route
+            path="/favorites"
+            element={
+              <>
+                <Header />
+                <FavoritesPage />
+                <Footer />
+              </>
+            }
+          />
+
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLoginPage />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
@@ -119,6 +133,7 @@ function App() {
         </Routes>
         </Router>
       </CartProvider>
+      </FavoritesProvider>
     </UserProvider>
   );
 }

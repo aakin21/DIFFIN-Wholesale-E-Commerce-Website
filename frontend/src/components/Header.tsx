@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
+import { useFavorites } from '../contexts/FavoritesContext';
 import { useTranslation } from 'react-i18next';
 
 const Header: React.FC = () => {
   const { cart } = useCart();
+  const { favorites } = useFavorites();
   const { t, i18n } = useTranslation();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -112,6 +114,28 @@ const Header: React.FC = () => {
                 </button>
               ))}
             </div>
+
+            {/* Favoriler */}
+            <Link to="/favorites" style={{ position: 'relative' }}>
+              <svg
+                width={isMobile ? "22" : "26"}
+                height={isMobile ? "22" : "26"}
+                viewBox="0 0 24 24"
+                fill={favorites.length > 0 ? '#ffffff' : 'none'}
+                stroke="#ffffff"
+                strokeWidth="1.5"
+                style={{ transition: 'opacity 0.3s', display: 'block' }}
+                onMouseOver={(e) => e.currentTarget.style.opacity = '0.7'}
+                onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
+              >
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+              </svg>
+              {favorites.length > 0 && (
+                <span style={{ position: 'absolute', top: '-8px', right: '-8px', backgroundColor: '#ffffff', color: '#000000', borderRadius: '50%', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: '600' }}>
+                  {favorites.length}
+                </span>
+              )}
+            </Link>
 
             {/* Sepet */}
             <Link

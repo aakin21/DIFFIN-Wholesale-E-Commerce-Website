@@ -105,7 +105,7 @@ const CartPage: React.FC = () => {
             {cart.map((item, index) => (
               <div key={index} style={{ display: 'flex', gap: '20px', paddingBottom: '32px', marginBottom: '32px', borderBottom: index < cart.length - 1 ? '1px solid #e5e7eb' : 'none' }}>
                 {/* Görsel */}
-                <div style={{ width: '100px', height: '120px', backgroundColor: '#f5f5f5', flexShrink: 0, overflow: 'hidden' }}>
+                <div style={{ width: '72px', height: '88px', backgroundColor: '#f5f5f5', flexShrink: 0, overflow: 'hidden' }}>
                   {item.colorImage ? (
                     <img src={getImageUrl(item.colorImage)} alt={item.colorName} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                   ) : (

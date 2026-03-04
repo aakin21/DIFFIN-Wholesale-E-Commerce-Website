@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api, { getImageUrl } from '../utils/api';
 import { Product, Category } from '../types';
+import { useFavorites } from '../contexts/FavoritesContext';
 
 const ProductsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -10,6 +11,14 @@ const ProductsPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [category, setCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const { toggleFavorite, isFavorited } = useFavorites();
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,85 +27,101 @@ const ProductsPage: React.FC = () => {
           api.get(`/products/category/${categoryId}`),
           api.get(`/categories`),
         ]);
-
         setProducts(productsRes.data);
-        const foundCategory = categoryRes.data.find((cat: Category) => cat._id === categoryId);
-        setCategory(foundCategory);
+        const found = categoryRes.data.find((cat: Category) => cat._id === categoryId);
+        setCategory(found);
       } catch (error) {
         console.error('Error fetching products:', error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [categoryId]);
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-black"></div>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+        <div style={{ width: '32px', height: '32px', border: '2px solid #000', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4">
-      <div className="container mx-auto max-w-7xl">
-        <div className="mb-8">
-          <Link to="/" className="text-gray-600 hover:text-black transition-colors inline-flex items-center">
-            ← {t('products.backToHome')}
-          </Link>
-        </div>
+    <div style={{ backgroundColor: '#fff', minHeight: '60vh' }}>
+      {/* Üst bar */}
+      <div style={{ borderBottom: '1px solid #e5e7eb', padding: isMobile ? '12px 16px' : '12px 40px' }}>
+        <Link
+          to="/"
+          style={{ fontSize: '12px', letterSpacing: '0.1em', color: '#000', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+          onMouseOver={(e) => e.currentTarget.style.opacity = '0.5'}
+          onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
+        >
+          ← {t('products.backToHome')}
+        </Link>
+      </div>
 
-        <h1 className="text-4xl md:text-5xl font-bold text-center mb-12 text-black">
-          {category?.name || t('products.title')}
+      {/* Kategori başlığı */}
+      <div style={{ padding: isMobile ? '24px 16px 16px' : '40px 40px 24px', textAlign: 'center' }}>
+        <h1 style={{ fontSize: isMobile ? '18px' : '22px', fontWeight: '300', letterSpacing: '0.2em', color: '#000' }}>
+          {category?.name.toUpperCase() || t('products.title')}
         </h1>
+      </div>
 
+      {/* Ürünler */}
+      <div style={{ padding: isMobile ? '0 16px 48px' : '0 40px 64px' }}>
         {products.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-2xl text-gray-500">{t('products.noProducts')}</p>
-          </div>
+          <p style={{ textAlign: 'center', color: '#9ca3af', padding: '80px 0', fontSize: '14px' }}>{t('products.noProducts')}</p>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {products.map((product) => (
-              <Link
-                key={product._id}
-                to={`/product/${product._id}`}
-                className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden"
-              >
-                <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
-                  {product.colors.length > 0 && product.colors[0].imageUrl ? (
-                    <img
-                      src={getImageUrl(product.colors[0].imageUrl)}
-                      alt={product.modelName}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-6xl font-bold text-gray-300">
-                        {product.modelName.charAt(0)}
-                      </span>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: isMobile ? '24px 16px' : '40px 32px' }}>
+            {products.map((product) => {
+              const img = product.colors.length > 0 ? product.colors[0].imageUrl : '';
+              const favoritePayload = {
+                productId: product._id,
+                modelName: product.modelName,
+                imageUrl: img,
+                pricePerSeries: product.pricePerSeries,
+                colorName: product.colors.length > 0 ? product.colors[0].colorName : '',
+              };
+              return (
+                <div key={product._id}>
+                  <Link to={`/product/${product._id}`} style={{ textDecoration: 'none', display: 'block' }}>
+                    {/* Görsel */}
+                    <div style={{ position: 'relative', aspectRatio: '3/4', backgroundColor: '#f5f5f5', overflow: 'hidden', marginBottom: '10px' }}>
+                      {img ? (
+                        <img
+                          src={getImageUrl(img)}
+                          alt={product.modelName}
+                          style={{ width: '100%', height: '100%', objectFit: 'contain', transition: 'transform 0.4s' }}
+                          onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
+                          onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                        />
+                      ) : (
+                        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <span style={{ fontSize: '48px', color: '#e5e7eb', fontWeight: '300' }}>{product.modelName.charAt(0)}</span>
+                        </div>
+                      )}
+                      {/* Favori butonu */}
+                      <button
+                        onClick={(e) => { e.preventDefault(); toggleFavorite(favoritePayload); }}
+                        style={{ position: 'absolute', top: '8px', right: '8px', background: 'rgba(255,255,255,0.9)', border: 'none', width: '30px', height: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill={isFavorited(product._id) ? '#000' : 'none'} stroke="#000" strokeWidth="1.5">
+                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                        </svg>
+                      </button>
                     </div>
-                  )}
+                    {/* Model adı ve fiyat */}
+                    <p style={{ fontSize: isMobile ? '11px' : '12px', letterSpacing: '0.06em', color: '#000', marginBottom: '3px' }}>
+                      DIFFIN — {product.modelName}
+                    </p>
+                    <p style={{ fontSize: '11px', color: '#6b7280' }}>
+                      {product.pricePerSeries.toLocaleString('tr-TR')} ₺ / adet
+                    </p>
+                  </Link>
                 </div>
-
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-black mb-2 group-hover:text-gray-700 transition-colors">
-                    {product.modelName}
-                  </h3>
-                  <p className="text-gray-600 mb-3">
-                    {product.colors.length} {t('products.colors')}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-black">
-                      {product.pricePerSeries.toLocaleString('tr-TR')} ₺
-                    </span>
-                    <span className="text-sm text-gray-500">/ seri</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

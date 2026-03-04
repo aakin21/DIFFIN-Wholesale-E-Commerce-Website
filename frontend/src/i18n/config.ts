@@ -128,6 +128,10 @@ const resources = {
         "haveAccount": "Már van fiókja?",
         "errorOccurred": "Hiba történt"
       },
+      "favorites": {
+        "title": "KEDVENCEIM",
+        "empty": "Még nincsenek kedvencek"
+      },
       "createBrand": {
         "title": "HOZZA LÉTRE MÁRKÁJÁT",
         "subtitle": "Rendeljen nagykereskedelmi termékeinkből, vagy küldje el mintáját. Gyártás, címkézés, csomagolás — mindent mi intézünk.",
@@ -297,6 +301,10 @@ const resources = {
         "haveAccount": "Zaten hesabınız var mı?",
         "errorOccurred": "Bir hata oluştu"
       },
+      "favorites": {
+        "title": "FAVORİLERİM",
+        "empty": "Henüz favori eklemediniz"
+      },
       "createBrand": {
         "title": "MARKANIZI OLUŞTURALIM",
         "subtitle": "Toptan satış yaptığımız ürünlerden sipariş verin ya da numune gönderin. Üretim, etiket, paket — geri kalan her şeyi biz ayarlıyoruz.",
@@ -446,6 +454,10 @@ const resources = {
         "willContact": "We will contact you as soon as possible.",
         "redirecting": "Redirecting to homepage...",
         "orderError": "An error occurred while creating the order!"
+      },
+      "favorites": {
+        "title": "MY FAVORITES",
+        "empty": "No favorites yet"
       },
       "createBrand": {
         "title": "CREATE YOUR BRAND",

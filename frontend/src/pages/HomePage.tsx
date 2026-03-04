@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api, { getImageUrl } from '../utils/api';
 import { Category, Product } from '../types';
+import { useFavorites } from '../contexts/FavoritesContext';
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
+  const { toggleFavorite, isFavorited } = useFavorites();
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -58,6 +60,7 @@ const HomePage: React.FC = () => {
         modelName: randomProduct.modelName,
         colorName: randomColor.colorName,
         imageUrl: randomColor.imageUrl,
+        pricePerSeries: randomProduct.pricePerSeries,
       };
     });
     return map;
@@ -128,32 +131,37 @@ const HomePage: React.FC = () => {
 
                     {/* Random Ürün */}
                     {randomItem && (
-                      <Link
-                        to={`/product/${randomItem.productId}`}
-                        style={{
-                          textDecoration: 'none',
-                          display: 'block'
-                        }}
-                      >
-                        <div style={{
-                          backgroundColor: '#f9fafb',
-                          aspectRatio: '3/4',
-                          overflow: 'hidden',
-                        }}>
-                          <img
-                            src={getImageUrl(randomItem.imageUrl)}
-                            alt={randomItem.modelName}
-                            style={{
-                              width: '100%',
-                              height: '100%',
-                              objectFit: 'contain',
-                              transition: 'transform 0.3s'
-                            }}
-                            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
-                            onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                          />
-                        </div>
-                      </Link>
+                      <div>
+                        <Link to={`/product/${randomItem.productId}`} style={{ textDecoration: 'none', display: 'block' }}>
+                          <div style={{ position: 'relative', backgroundColor: '#f5f5f5', aspectRatio: '3/4', overflow: 'hidden', marginBottom: '10px' }}>
+                            <img
+                              src={getImageUrl(randomItem.imageUrl)}
+                              alt={randomItem.modelName}
+                              style={{ width: '100%', height: '100%', objectFit: 'contain', transition: 'transform 0.4s' }}
+                              onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
+                              onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                            />
+                            {/* Favori butonu */}
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                toggleFavorite({ productId: randomItem.productId, modelName: randomItem.modelName, imageUrl: randomItem.imageUrl, pricePerSeries: randomItem.pricePerSeries, colorName: randomItem.colorName });
+                              }}
+                              style={{ position: 'absolute', top: '8px', right: '8px', background: 'rgba(255,255,255,0.9)', border: 'none', width: '30px', height: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                            >
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill={isFavorited(randomItem.productId) ? '#000' : 'none'} stroke="#000" strokeWidth="1.5">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                              </svg>
+                            </button>
+                          </div>
+                          <p style={{ fontSize: isMobile ? '11px' : '12px', letterSpacing: '0.06em', color: '#000', marginBottom: '3px' }}>
+                            DIFFIN — {randomItem.modelName}
+                          </p>
+                          <p style={{ fontSize: '11px', color: '#6b7280' }}>
+                            {randomItem.pricePerSeries.toLocaleString('tr-TR')} ₺ / adet
+                          </p>
+                        </Link>
+                      </div>
                     )}
                   </div>
                 );

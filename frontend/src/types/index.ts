@@ -29,6 +29,14 @@ export interface CartItem {
   totalPrice: number;
 }
 
+export interface FavoriteItem {
+  productId: string;
+  modelName: string;
+  imageUrl: string;
+  pricePerSeries: number;
+  colorName: string;
+}
+
 export interface OrderFormData {
   firstName: string;
   lastName: string;
