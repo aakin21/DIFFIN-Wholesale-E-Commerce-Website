@@ -87,7 +87,7 @@ const ProductsPage: React.FC = () => {
                 <div key={product._id}>
                   <Link to={`/product/${product._id}`} style={{ textDecoration: 'none', display: 'block' }}>
                     {/* Görsel */}
-                    <div style={{ position: 'relative', aspectRatio: '3/4', backgroundColor: '#f5f5f5', overflow: 'hidden', marginBottom: '10px' }}>
+                    <div style={{ position: 'relative', aspectRatio: '3/4', backgroundColor: '#ffffff', overflow: 'hidden', marginBottom: '10px' }}>
                       {img ? (
                         <img
                           src={getImageUrl(img)}
@@ -112,10 +112,10 @@ const ProductsPage: React.FC = () => {
                       </button>
                     </div>
                     {/* Model adı ve fiyat */}
-                    <p style={{ fontSize: isMobile ? '11px' : '12px', letterSpacing: '0.06em', color: '#000', marginBottom: '3px' }}>
+                    <p style={{ fontSize: isMobile ? '12px' : '13px', letterSpacing: '0.06em', color: '#000', marginBottom: '4px', textAlign: 'center' }}>
                       DIFFIN — {product.modelName}
                     </p>
-                    <p style={{ fontSize: '11px', color: '#6b7280' }}>
+                    <p style={{ fontSize: isMobile ? '11px' : '12px', color: '#6b7280', textAlign: 'center' }}>
                       {product.pricePerSeries.toLocaleString('tr-TR')} ₺ / adet
                     </p>
                   </Link>

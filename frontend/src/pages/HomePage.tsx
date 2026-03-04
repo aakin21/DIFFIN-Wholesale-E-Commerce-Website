@@ -133,7 +133,7 @@ const HomePage: React.FC = () => {
                     {randomItem && (
                       <div>
                         <Link to={`/product/${randomItem.productId}`} style={{ textDecoration: 'none', display: 'block' }}>
-                          <div style={{ position: 'relative', backgroundColor: '#f5f5f5', aspectRatio: '3/4', overflow: 'hidden', marginBottom: '10px' }}>
+                          <div style={{ position: 'relative', backgroundColor: '#ffffff', aspectRatio: '3/4', overflow: 'hidden', marginBottom: '10px' }}>
                             <img
                               src={getImageUrl(randomItem.imageUrl)}
                               alt={randomItem.modelName}
@@ -154,10 +154,10 @@ const HomePage: React.FC = () => {
                               </svg>
                             </button>
                           </div>
-                          <p style={{ fontSize: isMobile ? '11px' : '12px', letterSpacing: '0.06em', color: '#000', marginBottom: '3px' }}>
+                          <p style={{ fontSize: isMobile ? '12px' : '13px', letterSpacing: '0.06em', color: '#000', marginBottom: '4px', textAlign: 'center' }}>
                             DIFFIN — {randomItem.modelName}
                           </p>
-                          <p style={{ fontSize: '11px', color: '#6b7280' }}>
+                          <p style={{ fontSize: isMobile ? '11px' : '12px', color: '#6b7280', textAlign: 'center' }}>
                             {randomItem.pricePerSeries.toLocaleString('tr-TR')} ₺ / adet
                           </p>
                         </Link>

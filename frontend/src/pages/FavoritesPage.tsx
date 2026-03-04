@@ -53,7 +53,7 @@ const FavoritesPage: React.FC = () => {
             {favorites.map(item => (
               <div key={item.productId} style={{ position: 'relative' }}>
                 <Link to={`/product/${item.productId}`} style={{ textDecoration: 'none', display: 'block' }}>
-                  <div style={{ position: 'relative', aspectRatio: '3/4', backgroundColor: '#f5f5f5', overflow: 'hidden', marginBottom: '12px' }}>
+                  <div style={{ position: 'relative', aspectRatio: '3/4', backgroundColor: '#ffffff', overflow: 'hidden', marginBottom: '12px' }}>
                     <img
                       src={getImageUrl(item.imageUrl)}
                       alt={item.modelName}
@@ -66,8 +66,8 @@ const FavoritesPage: React.FC = () => {
                       <HeartIcon filled={isFavorited(item.productId)} />
                     </button>
                   </div>
-                  <p style={{ fontSize: '11px', letterSpacing: '0.06em', color: '#000', marginBottom: '4px' }}>DIFFIN — {item.modelName}</p>
-                  <p style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px' }}>{item.pricePerSeries.toLocaleString('tr-TR')} ₺ / {t('productDetail.perPiece').replace('/ ', '')}</p>
+                  <p style={{ fontSize: '13px', letterSpacing: '0.06em', color: '#000', marginBottom: '4px', textAlign: 'center' }}>DIFFIN — {item.modelName}</p>
+                  <p style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', textAlign: 'center' }}>{item.pricePerSeries.toLocaleString('tr-TR')} ₺ / adet</p>
                 </Link>
                 <button
                   onClick={(e) => handleAddToCart(item, e)}
