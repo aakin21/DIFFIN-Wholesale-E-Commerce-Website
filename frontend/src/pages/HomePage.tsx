@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api, { BASE_URL } from '../utils/api';
@@ -39,25 +39,29 @@ const HomePage: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Her kategori için random bir ürün ve renk seç
-  const getRandomProductForCategory = (categoryId: string) => {
-    const categoryProducts = products.filter(product => {
-      const id = product.categoryId && typeof product.categoryId === 'object'
-        ? (product.categoryId as Category)._id
-        : product.categoryId as string;
-      return id === categoryId;
+  // Her kategori için random bir ürün ve renk seç (products yüklenince bir kez hesaplanır)
+  const categoryRandomItems = useMemo(() => {
+    const map: Record<string, { productId: string; modelName: string; colorName: string; imageUrl: string } | null> = {};
+    categories.forEach(category => {
+      const categoryProducts = products.filter(product => {
+        const id = product.categoryId && typeof product.categoryId === 'object'
+          ? (product.categoryId as Category)._id
+          : product.categoryId as string;
+        return id === category._id;
+      });
+      if (categoryProducts.length === 0) { map[category._id] = null; return; }
+      const randomProduct = categoryProducts[Math.floor(Math.random() * categoryProducts.length)];
+      if (randomProduct.colors.length === 0) { map[category._id] = null; return; }
+      const randomColor = randomProduct.colors[Math.floor(Math.random() * randomProduct.colors.length)];
+      map[category._id] = {
+        productId: randomProduct._id,
+        modelName: randomProduct.modelName,
+        colorName: randomColor.colorName,
+        imageUrl: randomColor.imageUrl,
+      };
     });
-    if (categoryProducts.length === 0) return null;
-    const randomProduct = categoryProducts[Math.floor(Math.random() * categoryProducts.length)];
-    if (randomProduct.colors.length === 0) return null;
-    const randomColor = randomProduct.colors[Math.floor(Math.random() * randomProduct.colors.length)];
-    return {
-      productId: randomProduct._id,
-      modelName: randomProduct.modelName,
-      colorName: randomColor.colorName,
-      imageUrl: randomColor.imageUrl,
-    };
-  };
+    return map;
+  }, [products, categories]);
 
   return (
     <div className="min-h-screen">
@@ -95,7 +99,7 @@ const HomePage: React.FC = () => {
               gap: isMobile ? '32px' : '40px'
             }}>
               {categories.map((category) => {
-                const randomItem = getRandomProductForCategory(category._id);
+                const randomItem = categoryRandomItems[category._id];
                 return (
                   <div key={category._id}>
                     {/* Kategori Başlığı */}

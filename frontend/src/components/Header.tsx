@@ -58,8 +58,25 @@ const Header: React.FC = () => {
             </span>
           </div>
 
-          {/* Dil, Sepet ve Hesabım - Sağ */}
-          <div style={{display: 'flex', alignItems: 'center', gap: isMobile ? '12px' : '20px'}}>
+          {/* Dil, About, Sepet ve Hesabım - Sağ */}
+          <div style={{display: 'flex', alignItems: 'center', gap: isMobile ? '10px' : '20px'}}>
+            {/* About Us Link */}
+            <Link
+              to="/about"
+              style={{
+                fontSize: isMobile ? '10px' : '12px',
+                fontWeight: '500',
+                letterSpacing: '0.08em',
+                color: '#b0b0b0',
+                textDecoration: 'none',
+                transition: 'color 0.3s'
+              }}
+              onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'}
+              onMouseOut={(e) => e.currentTarget.style.color = '#b0b0b0'}
+            >
+              {t('header.aboutUs')}
+            </Link>
+
             {/* Dil Seçici */}
             <div style={{display: 'flex', gap: isMobile ? '4px' : '8px', alignItems: 'center'}}>
               {['tr', 'en', 'hu'].map((lang) => (

@@ -77,7 +77,13 @@ const resources = {
         "features": "Jellemzők",
         "wholesale": "Nagykereskedelem",
         "notFound": "Termék nem található",
-        "backToProducts": "Vissza a Termékekhez"
+        "backToProducts": "Vissza a Termékekhez",
+        "backToHome": "← FŐOLDAL",
+        "inStock": "KÉSZLETEN VAN",
+        "perSeries": "/ sorozat",
+        "seriesDescription": "1 sorozat = S, M (×2), L, XL — összesen 5 db",
+        "seriesCount": "Sorozat Száma",
+        "totalLabel": "Összesen:"
       },
       "cart": {
         "title": "KOSARAM",
@@ -238,7 +244,13 @@ const resources = {
         "features": "Özellikler",
         "wholesale": "Toptan",
         "notFound": "Ürün bulunamadı",
-        "backToProducts": "Ürünlere Dön"
+        "backToProducts": "Ürünlere Dön",
+        "backToHome": "← ANA SAYFA",
+        "inStock": "STOKTA VAR",
+        "perSeries": "/ seri",
+        "seriesDescription": "1 seri = S, M (×2), L, XL — toplam 5 adet",
+        "seriesCount": "Seri Sayısı",
+        "totalLabel": "Toplam:"
       },
       "cart": {
         "title": "SEPETİM",
@@ -399,7 +411,13 @@ const resources = {
         "features": "Features",
         "wholesale": "Wholesale",
         "notFound": "Product not found",
-        "backToProducts": "Back to Products"
+        "backToProducts": "Back to Products",
+        "backToHome": "← HOME",
+        "inStock": "IN STOCK",
+        "perSeries": "/ series",
+        "seriesDescription": "1 series = S, M (×2), L, XL — 5 pieces total",
+        "seriesCount": "Series Count",
+        "totalLabel": "Total:"
       },
       "cart": {
         "title": "MY CART",

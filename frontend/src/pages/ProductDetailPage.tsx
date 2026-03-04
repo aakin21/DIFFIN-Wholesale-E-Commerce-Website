@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import api, { BASE_URL } from '../utils/api';
 import { Product, ColorVariant } from '../types';
 import { useCart } from '../contexts/CartContext';
@@ -8,6 +9,7 @@ const ProductDetailPage: React.FC = () => {
   const { productId } = useParams<{ productId: string }>();
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { t } = useTranslation();
 
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedColor, setSelectedColor] = useState<ColorVariant | null>(null);
@@ -64,7 +66,7 @@ const ProductDetailPage: React.FC = () => {
   if (!product) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-        <p style={{ color: '#9ca3af', fontSize: '18px' }}>Ürün bulunamadı</p>
+        <p style={{ color: '#9ca3af', fontSize: '18px' }}>{t('productDetail.notFound')}</p>
       </div>
     );
   }
@@ -82,7 +84,7 @@ const ProductDetailPage: React.FC = () => {
           onMouseOver={(e) => e.currentTarget.style.opacity = '0.5'}
           onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
         >
-          ← ANA SAYFA
+          {t('productDetail.backToHome')}
         </Link>
       </div>
 
@@ -194,7 +196,7 @@ const ProductDetailPage: React.FC = () => {
           {/* Stokta Var */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#22c55e', display: 'inline-block' }} />
-            <span style={{ fontSize: '12px', letterSpacing: '0.08em', color: '#22c55e', fontWeight: '500' }}>STOKTA VAR</span>
+            <span style={{ fontSize: '12px', letterSpacing: '0.08em', color: '#22c55e', fontWeight: '500' }}>{t('productDetail.inStock')}</span>
           </div>
 
           {/* Fiyat */}
@@ -202,17 +204,17 @@ const ProductDetailPage: React.FC = () => {
             <span style={{ fontSize: '24px', fontWeight: '400', color: '#000000' }}>
               {product.pricePerSeries.toLocaleString('tr-TR')} ₺
             </span>
-            <span style={{ fontSize: '13px', color: '#9ca3af', marginLeft: '8px' }}>/ seri</span>
+            <span style={{ fontSize: '13px', color: '#9ca3af', marginLeft: '8px' }}>{t('productDetail.perSeries')}</span>
           </div>
 
           {/* Seri bilgisi */}
           <div style={{ backgroundColor: '#fafafa', padding: '14px 16px', fontSize: '13px', color: '#6b7280', lineHeight: '1.6' }}>
-            <span style={{ color: '#000000', fontWeight: '500' }}>1 seri</span> = S, M (×2), L, XL — toplam 5 adet
+            {t('productDetail.seriesDescription')}
           </div>
 
           {/* Seri sayısı */}
           <div>
-            <p style={{ fontSize: '11px', letterSpacing: '0.1em', color: '#9ca3af', marginBottom: '12px', textTransform: 'uppercase' }}>Seri Sayısı</p>
+            <p style={{ fontSize: '11px', letterSpacing: '0.1em', color: '#9ca3af', marginBottom: '12px', textTransform: 'uppercase' }}>{t('productDetail.seriesCount')}</p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0' }}>
               <button
                 onClick={() => setSeriesCount(Math.max(1, seriesCount - 1))}
@@ -228,7 +230,7 @@ const ProductDetailPage: React.FC = () => {
             </div>
             {seriesCount > 1 && (
               <p style={{ fontSize: '13px', color: '#6b7280', marginTop: '8px' }}>
-                Toplam: <strong style={{ color: '#000' }}>{(product.pricePerSeries * seriesCount).toLocaleString('tr-TR')} ₺</strong>
+                {t('productDetail.totalLabel')} <strong style={{ color: '#000' }}>{(product.pricePerSeries * seriesCount).toLocaleString('tr-TR')} ₺</strong>
               </p>
             )}
           </div>
@@ -246,7 +248,7 @@ const ProductDetailPage: React.FC = () => {
             onMouseOver={(e) => { if (selectedColor) e.currentTarget.style.backgroundColor = '#333333'; }}
             onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#000000'; }}
           >
-            SEPETE EKLE
+            {t('productDetail.addToCart')}
           </button>
         </div>
       </div>
