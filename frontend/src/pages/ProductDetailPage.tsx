@@ -49,8 +49,8 @@ const ProductDetailPage: React.FC = () => {
       colorName: selectedColor.colorName,
       colorImage: selectedColor.imageUrl,
       seriesCount,
-      pricePerSeries: product.pricePerSeries,
-      totalPrice: product.pricePerSeries * seriesCount,
+      pricePerSeries: product.pricePerSeries * 5,
+      totalPrice: product.pricePerSeries * 5 * seriesCount,
     });
     navigate('/cart');
   };
@@ -201,15 +201,21 @@ const ProductDetailPage: React.FC = () => {
 
           {/* Fiyat */}
           <div style={{ borderTop: '1px solid #e5e7eb', borderBottom: '1px solid #e5e7eb', padding: '20px 0' }}>
-            <span style={{ fontSize: '24px', fontWeight: '400', color: '#000000' }}>
-              {product.pricePerSeries.toLocaleString('tr-TR')} ₺
-            </span>
-            <span style={{ fontSize: '13px', color: '#9ca3af', marginLeft: '8px' }}>{t('productDetail.perSeries')}</span>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+              <span style={{ fontSize: '24px', fontWeight: '400', color: '#000000' }}>
+                {product.pricePerSeries.toLocaleString('tr-TR')} ₺
+              </span>
+              <span style={{ fontSize: '13px', color: '#9ca3af' }}>{t('productDetail.perPiece')}</span>
+            </div>
+            <p style={{ fontSize: '13px', color: '#6b7280', margin: '6px 0 0 0' }}>
+              {t('productDetail.seriesPrice')} <strong style={{ color: '#000' }}>{(product.pricePerSeries * 5).toLocaleString('tr-TR')} ₺</strong>
+            </p>
           </div>
 
           {/* Seri bilgisi */}
           <div style={{ backgroundColor: '#fafafa', padding: '14px 16px', fontSize: '13px', color: '#6b7280', lineHeight: '1.6' }}>
-            {t('productDetail.seriesDescription')}
+            <p style={{ margin: '0 0 10px 0' }}>{t('productDetail.seriesDescription')}</p>
+            <p style={{ margin: 0, lineHeight: '1.7' }}>{t('productDetail.wholesaleNote')}</p>
           </div>
 
           {/* Seri sayısı */}
@@ -230,7 +236,7 @@ const ProductDetailPage: React.FC = () => {
             </div>
             {seriesCount > 1 && (
               <p style={{ fontSize: '13px', color: '#6b7280', marginTop: '8px' }}>
-                {t('productDetail.totalLabel')} <strong style={{ color: '#000' }}>{(product.pricePerSeries * seriesCount).toLocaleString('tr-TR')} ₺</strong>
+                {t('productDetail.totalLabel')} <strong style={{ color: '#000' }}>{(product.pricePerSeries * 5 * seriesCount).toLocaleString('tr-TR')} ₺</strong>
               </p>
             )}
           </div>

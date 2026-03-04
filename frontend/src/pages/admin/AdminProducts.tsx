@@ -504,7 +504,7 @@ const AdminProducts: React.FC = () => {
                 </div>
 
                 <div>
-                  <label style={{display: 'block', fontSize: '12px', fontWeight: '500', marginBottom: '8px'}}>Fiyat (Seri Başı)</label>
+                  <label style={{display: 'block', fontSize: '12px', fontWeight: '500', marginBottom: '8px'}}>Birim Fiyat (Adet)</label>
                   <input
                     type="number"
                     value={productForm.pricePerSeries}
