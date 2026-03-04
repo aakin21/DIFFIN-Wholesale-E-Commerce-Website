@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const CustomProductPage: React.FC = () => {
   const { t } = useTranslation();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const whatsappNumber = '+905531349703';
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleWhatsAppClick = () => {
     window.open(`https://wa.me/${whatsappNumber}`, '_blank');
@@ -12,9 +19,9 @@ const CustomProductPage: React.FC = () => {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#ffffff' }}>
       {/* Hero Section */}
-      <div style={{ padding: '120px 24px 80px', textAlign: 'center', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: isMobile ? '60px 16px 48px' : '120px 24px 80px', textAlign: 'center', maxWidth: '900px', margin: '0 auto' }}>
         <h1 style={{
-          fontSize: '48px',
+          fontSize: isMobile ? '28px' : '48px',
           fontWeight: '300',
           letterSpacing: '0.15em',
           marginBottom: '32px',
@@ -23,7 +30,7 @@ const CustomProductPage: React.FC = () => {
           {t('customProduct.title')}
         </h1>
         <p style={{
-          fontSize: '18px',
+          fontSize: isMobile ? '14px' : '18px',
           lineHeight: '1.8',
           color: '#4b5563',
           maxWidth: '700px',
@@ -38,19 +45,19 @@ const CustomProductPage: React.FC = () => {
         width: '80px',
         height: '1px',
         backgroundColor: '#000000',
-        margin: '0 auto 80px'
+        margin: isMobile ? '0 auto 48px' : '0 auto 80px'
       }}></div>
 
       {/* Features Grid */}
-      <div style={{ padding: '0 24px 80px', maxWidth: '1000px', margin: '0 auto' }}>
+      <div style={{ padding: isMobile ? '0 16px 48px' : '0 24px 80px', maxWidth: '1000px', margin: '0 auto' }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '48px'
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: isMobile ? '32px' : '48px'
         }}>
           <div style={{ textAlign: 'center' }}>
             <h3 style={{
-              fontSize: '20px',
+              fontSize: isMobile ? '16px' : '20px',
               fontWeight: '400',
               marginBottom: '16px',
               color: '#000000',
@@ -65,7 +72,7 @@ const CustomProductPage: React.FC = () => {
 
           <div style={{ textAlign: 'center' }}>
             <h3 style={{
-              fontSize: '20px',
+              fontSize: isMobile ? '16px' : '20px',
               fontWeight: '400',
               marginBottom: '16px',
               color: '#000000',
@@ -80,7 +87,7 @@ const CustomProductPage: React.FC = () => {
 
           <div style={{ textAlign: 'center' }}>
             <h3 style={{
-              fontSize: '20px',
+              fontSize: isMobile ? '16px' : '20px',
               fontWeight: '400',
               marginBottom: '16px',
               color: '#000000',
@@ -100,13 +107,13 @@ const CustomProductPage: React.FC = () => {
         width: '100%',
         height: '1px',
         backgroundColor: '#e5e7eb',
-        margin: '0 0 80px'
+        margin: isMobile ? '0 0 48px' : '0 0 80px'
       }}></div>
 
       {/* WhatsApp Contact */}
-      <div style={{ padding: '0 24px 80px', maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
+      <div style={{ padding: isMobile ? '0 16px 48px' : '0 24px 80px', maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
         <h2 style={{
-          fontSize: '28px',
+          fontSize: isMobile ? '20px' : '28px',
           fontWeight: '300',
           letterSpacing: '0.1em',
           marginBottom: '24px',
@@ -114,7 +121,7 @@ const CustomProductPage: React.FC = () => {
         }}>
           {t('customProduct.contact.title')}
         </h2>
-        <p style={{ fontSize: '15px', color: '#6b7280', marginBottom: '32px', lineHeight: '1.6' }}>
+        <p style={{ fontSize: isMobile ? '13px' : '15px', color: '#6b7280', marginBottom: '32px', lineHeight: '1.6' }}>
           {t('customProduct.contact.description')}
         </p>
         <button
@@ -122,7 +129,7 @@ const CustomProductPage: React.FC = () => {
           style={{
             backgroundColor: '#000000',
             color: '#ffffff',
-            padding: '16px 48px',
+            padding: isMobile ? '14px 32px' : '16px 48px',
             border: 'none',
             cursor: 'pointer',
             fontSize: '14px',
@@ -142,11 +149,11 @@ const CustomProductPage: React.FC = () => {
         width: '100%',
         height: '1px',
         backgroundColor: '#e5e7eb',
-        margin: '0 0 80px'
+        margin: isMobile ? '0 0 48px' : '0 0 80px'
       }}></div>
 
       {/* Minimum Order */}
-      <div style={{ padding: '0 24px 120px', maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
+      <div style={{ padding: isMobile ? '0 16px 60px' : '0 24px 120px', maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
         <h3 style={{
           fontSize: '16px',
           fontWeight: '400',
@@ -156,7 +163,7 @@ const CustomProductPage: React.FC = () => {
         }}>
           {t('customProduct.minOrder.title')}
         </h3>
-        <p style={{ fontSize: '24px', fontWeight: '300', color: '#000000', letterSpacing: '0.05em' }}>
+        <p style={{ fontSize: isMobile ? '18px' : '24px', fontWeight: '300', color: '#000000', letterSpacing: '0.05em' }}>
           {t('customProduct.minOrder.amount')}
         </p>
       </div>
