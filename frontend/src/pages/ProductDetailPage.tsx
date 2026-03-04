@@ -102,11 +102,11 @@ const ProductDetailPage: React.FC = () => {
           <div style={{ padding: '0' }}>
             {/* Ana görsel */}
             <div
-              style={{ aspectRatio: '1/1', backgroundColor: '#f5f5f5', overflow: 'hidden', cursor: mainImgSrc ? 'zoom-in' : 'default' }}
+              style={{ aspectRatio: '3/4', backgroundColor: '#f5f5f5', overflow: 'hidden', cursor: mainImgSrc ? 'zoom-in' : 'default' }}
               onClick={() => mainImgSrc && setLightbox(mainImgSrc)}
             >
               {mainImgSrc ? (
-                <img src={mainImgSrc} alt={selectedColor?.colorName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src={mainImgSrc} alt={selectedColor?.colorName} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               ) : (
                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <span style={{ fontSize: '80px', color: '#e5e7eb', fontWeight: '300' }}>{product.modelName.charAt(0)}</span>
@@ -128,7 +128,7 @@ const ProductDetailPage: React.FC = () => {
                     }}
                   >
                     {color.imageUrl
-                      ? <img src={getImageUrl(color.imageUrl)} alt={color.colorName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ? <img src={getImageUrl(color.imageUrl)} alt={color.colorName} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                       : <span style={{ fontSize: '20px', color: '#9ca3af' }}>{color.colorName.charAt(0)}</span>
                     }
                   </button>
@@ -164,11 +164,11 @@ const ProductDetailPage: React.FC = () => {
 
             {/* Büyük ana görsel */}
             <div
-              style={{ flex: 1, aspectRatio: '1/1', backgroundColor: '#f5f5f5', overflow: 'hidden', cursor: mainImgSrc ? 'zoom-in' : 'default' }}
+              style={{ flex: 1, aspectRatio: '3/4', backgroundColor: '#f5f5f5', overflow: 'hidden', cursor: mainImgSrc ? 'zoom-in' : 'default' }}
               onClick={() => mainImgSrc && setLightbox(mainImgSrc)}
             >
               {mainImgSrc ? (
-                <img src={mainImgSrc} alt={selectedColor?.colorName} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'opacity 0.2s' }} />
+                <img src={mainImgSrc} alt={selectedColor?.colorName} style={{ width: '100%', height: '100%', objectFit: 'contain', transition: 'opacity 0.2s' }} />
               ) : (
                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <span style={{ fontSize: '120px', color: '#e5e7eb', fontWeight: '300' }}>{product.modelName.charAt(0)}</span>

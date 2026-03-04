@@ -137,31 +137,22 @@ const HomePage: React.FC = () => {
                       >
                         <div style={{
                           backgroundColor: '#f9fafb',
-                          aspectRatio: '1/1',
+                          aspectRatio: '3/4',
                           overflow: 'hidden',
-                          marginBottom: '12px'
                         }}>
                           <img
                             src={getImageUrl(randomItem.imageUrl)}
-                            alt={`${randomItem.modelName} - ${randomItem.colorName}`}
+                            alt={randomItem.modelName}
                             style={{
                               width: '100%',
                               height: '100%',
-                              objectFit: 'cover',
+                              objectFit: 'contain',
                               transition: 'transform 0.3s'
                             }}
-                            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
                             onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
                           />
                         </div>
-                        <p style={{
-                          fontSize: '12px',
-                          color: '#000000',
-                          textAlign: 'center',
-                          letterSpacing: '0.05em'
-                        }}>
-                          {randomItem.modelName} - {randomItem.colorName}
-                        </p>
                       </Link>
                     )}
                   </div>
