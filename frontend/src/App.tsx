@@ -3,6 +3,12 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 
 const WhatsAppButton: React.FC = () => {
   const { pathname } = useLocation();
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+  React.useEffect(() => {
+    const h = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', h);
+    return () => window.removeEventListener('resize', h);
+  }, []);
   if (pathname.startsWith('/admin')) return null;
   return (
     <a
@@ -10,7 +16,7 @@ const WhatsAppButton: React.FC = () => {
       target="_blank"
       rel="noopener noreferrer"
       style={{
-        position: 'fixed', bottom: '24px', right: '24px',
+        position: 'fixed', bottom: isMobile ? '90px' : '24px', right: '24px',
         width: '56px', height: '56px', backgroundColor: '#25D366',
         borderRadius: '50%', display: 'flex', alignItems: 'center',
         justifyContent: 'center', zIndex: 1000,

@@ -94,35 +94,43 @@ const ProductDetailPage: React.FC = () => {
         gridTemplateColumns: isMobile ? '1fr' : '60% 40%',
         maxWidth: '1300px',
         margin: '0 auto',
-        overflowX: 'hidden',
       }}>
 
         {/* SOL: Görseller */}
         {isMobile ? (
-          /* Mobil: yatay scroll thumbnail + seçilen büyük */
-          <div style={{ padding: '0' }}>
-            {/* Ana görsel */}
+          /* Mobil: ana görsel + altta yatay kaydırmalı thumbnail şeridi */
+          <div style={{ width: '100%', minWidth: 0, overflow: 'hidden' }}>
+            {/* Ana görsel — doğal oran, tam genişlik */}
             <div
-              style={{ aspectRatio: '3/4', maxHeight: '60vh', backgroundColor: '#f5f5f5', overflow: 'hidden', cursor: mainImgSrc ? 'zoom-in' : 'default' }}
+              style={{ width: '100%', backgroundColor: '#f5f5f5', cursor: mainImgSrc ? 'zoom-in' : 'default', overflow: 'hidden' }}
               onClick={() => mainImgSrc && setLightbox(mainImgSrc)}
             >
               {mainImgSrc ? (
-                <img src={mainImgSrc} alt={selectedColor?.colorName} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <img
+                  src={mainImgSrc}
+                  alt={selectedColor?.colorName}
+                  style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'contain' }}
+                />
               ) : (
-                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontSize: '80px', color: '#e5e7eb', fontWeight: '300' }}>{product.modelName.charAt(0)}</span>
+                <div style={{ width: '100%', paddingTop: '133%', position: 'relative', backgroundColor: '#f5f5f5' }}>
+                  <span style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '80px', color: '#e5e7eb', fontWeight: '300' }}>
+                    {product.modelName.charAt(0)}
+                  </span>
                 </div>
               )}
             </div>
-            {/* Thumbnail şeridi */}
+            {/* Thumbnail şeridi — scrollbar gizli, parmakla kaydırılır */}
             {product.colors.length > 1 && (
-              <div className="no-scrollbar" style={{ display: 'flex', gap: '4px', padding: '8px 4px', overflowX: 'auto', backgroundColor: '#fafafa', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
+              <div
+                className="no-scrollbar"
+                style={{ display: 'flex', gap: '6px', padding: '8px', overflowX: 'auto', backgroundColor: '#fafafa', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+              >
                 {product.colors.map((color, i) => (
                   <button
                     key={i}
                     onClick={() => setSelectedColor(color)}
                     style={{
-                      flexShrink: 0, width: '72px', height: '72px', padding: 0, cursor: 'pointer',
+                      flexShrink: 0, width: '76px', height: '76px', padding: 0, cursor: 'pointer',
                       backgroundColor: '#f0f0f0', overflow: 'hidden', border: 'none',
                       outline: selectedColor?.colorName === color.colorName ? '2px solid #000' : '2px solid transparent',
                       outlineOffset: '-2px',
@@ -180,11 +188,18 @@ const ProductDetailPage: React.FC = () => {
         )}
 
         {/* SAĞ: Ürün bilgisi */}
-        <div style={{ padding: isMobile ? '24px 16px' : '48px 40px', borderLeft: isMobile ? 'none' : '1px solid #e5e7eb', display: 'flex', flexDirection: 'column', gap: '28px', overflowX: 'hidden', minWidth: 0 }}>
+        <div style={{
+          padding: isMobile ? '24px 16px' : '48px 40px',
+          borderLeft: isMobile ? 'none' : '1px solid #e5e7eb',
+          display: 'flex', flexDirection: 'column', gap: '28px',
+          minWidth: 0,
+          /* Mobilde sticky buton için alt padding */
+          paddingBottom: isMobile ? '96px' : undefined,
+        }}>
 
           {/* Model adı */}
           <div>
-            <h1 style={{ fontSize: isMobile ? '22px' : '26px', fontWeight: '400', letterSpacing: '0.08em', color: '#000000', margin: '0 0 6px 0', textTransform: 'uppercase' }}>
+            <h1 style={{ fontSize: isMobile ? '20px' : '26px', fontWeight: '400', letterSpacing: '0.08em', color: '#000000', margin: '0 0 6px 0', textTransform: 'uppercase', wordBreak: 'break-word' }}>
               {product.modelName}
             </h1>
             {selectedColor && (
@@ -196,25 +211,25 @@ const ProductDetailPage: React.FC = () => {
 
           {/* Stokta Var */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#22c55e', display: 'inline-block' }} />
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#22c55e', display: 'inline-block', flexShrink: 0 }} />
             <span style={{ fontSize: '12px', letterSpacing: '0.08em', color: '#22c55e', fontWeight: '500' }}>{t('productDetail.inStock')}</span>
           </div>
 
           {/* Fiyat */}
           <div style={{ borderTop: '1px solid #e5e7eb', borderBottom: '1px solid #e5e7eb', padding: '20px 0' }}>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-              <span style={{ fontSize: '24px', fontWeight: '400', color: '#000000' }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: isMobile ? '20px' : '24px', fontWeight: '400', color: '#000000' }}>
                 {product.pricePerSeries.toLocaleString('tr-TR')} ₺
               </span>
               <span style={{ fontSize: '13px', color: '#9ca3af' }}>{t('productDetail.perPiece')}</span>
             </div>
-            <p style={{ fontSize: '13px', color: '#6b7280', margin: '6px 0 0 0' }}>
+            <p style={{ fontSize: '13px', color: '#6b7280', margin: '6px 0 0 0', wordBreak: 'break-word' }}>
               {t('productDetail.seriesPrice')} <strong style={{ color: '#000' }}>{(product.pricePerSeries * 5).toLocaleString('tr-TR')} ₺</strong>
             </p>
           </div>
 
           {/* Seri bilgisi */}
-          <div style={{ backgroundColor: '#fafafa', padding: '14px 16px', fontSize: '13px', color: '#6b7280', lineHeight: '1.6' }}>
+          <div style={{ backgroundColor: '#fafafa', padding: '14px 16px', fontSize: isMobile ? '12px' : '13px', color: '#6b7280', lineHeight: '1.6', wordBreak: 'break-word' }}>
             <p style={{ margin: '0 0 10px 0' }}>{t('productDetail.seriesDescription')}</p>
             <p style={{ margin: 0, lineHeight: '1.7' }}>{t('productDetail.wholesaleNote')}</p>
           </div>
@@ -222,7 +237,7 @@ const ProductDetailPage: React.FC = () => {
           {/* Seri sayısı */}
           <div>
             <p style={{ fontSize: '11px', letterSpacing: '0.1em', color: '#9ca3af', marginBottom: '12px', textTransform: 'uppercase' }}>{t('productDetail.seriesCount')}</p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <button
                 onClick={() => setSeriesCount(Math.max(1, seriesCount - 1))}
                 style={{ width: '44px', height: '44px', backgroundColor: '#ffffff', border: '1px solid #000000', fontSize: '20px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '300' }}
@@ -242,23 +257,47 @@ const ProductDetailPage: React.FC = () => {
             )}
           </div>
 
-          {/* Sepete ekle */}
+          {/* Sepete ekle — Desktop */}
+          {!isMobile && (
+            <button
+              onClick={handleAddToCart}
+              disabled={!selectedColor}
+              style={{
+                width: '100%', padding: '16px', backgroundColor: '#000000', color: '#ffffff',
+                border: 'none', fontSize: '13px', letterSpacing: '0.15em', fontWeight: '500',
+                cursor: selectedColor ? 'pointer' : 'not-allowed', textTransform: 'uppercase',
+                transition: 'background-color 0.2s', opacity: selectedColor ? 1 : 0.4,
+              }}
+              onMouseOver={(e) => { if (selectedColor) e.currentTarget.style.backgroundColor = '#333333'; }}
+              onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#000000'; }}
+            >
+              {t('productDetail.addToCart')}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Sepete ekle — Mobil sticky alt çubuk */}
+      {isMobile && (
+        <div style={{
+          position: 'fixed', bottom: 0, left: 0, right: 0,
+          backgroundColor: '#ffffff', borderTop: '1px solid #e5e7eb',
+          padding: '12px 16px', zIndex: 50,
+        }}>
           <button
             onClick={handleAddToCart}
             disabled={!selectedColor}
             style={{
-              width: '100%', padding: '16px', backgroundColor: '#000000', color: '#ffffff',
-              border: 'none', fontSize: '13px', letterSpacing: '0.15em', fontWeight: '500',
+              width: '100%', padding: '14px', backgroundColor: '#000000', color: '#ffffff',
+              border: 'none', fontSize: '13px', letterSpacing: '0.12em', fontWeight: '500',
               cursor: selectedColor ? 'pointer' : 'not-allowed', textTransform: 'uppercase',
-              transition: 'background-color 0.2s', opacity: selectedColor ? 1 : 0.4,
+              opacity: selectedColor ? 1 : 0.4,
             }}
-            onMouseOver={(e) => { if (selectedColor) e.currentTarget.style.backgroundColor = '#333333'; }}
-            onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#000000'; }}
           >
             {t('productDetail.addToCart')}
           </button>
         </div>
-      </div>
+      )}
 
       {/* Lightbox */}
       {lightbox && (
