@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api, { getImageUrl } from '../utils/api';
-import { Product, ColorVariant } from '../types';
+import { Product } from '../types';
 import { useCart } from '../contexts/CartContext';
 
 const ProductDetailPage: React.FC = () => {
@@ -12,7 +12,7 @@ const ProductDetailPage: React.FC = () => {
   const { t } = useTranslation();
 
   const [product, setProduct] = useState<Product | null>(null);
-  const [selectedColor, setSelectedColor] = useState<ColorVariant | null>(null);
+  const [selectedPhotoIdx, setSelectedPhotoIdx] = useState(0);
   const [seriesCount, setSeriesCount] = useState(1);
   const [loading, setLoading] = useState(true);
   const [lightbox, setLightbox] = useState<string | null>(null);
@@ -29,9 +29,7 @@ const ProductDetailPage: React.FC = () => {
       try {
         const response = await api.get(`/products/${productId}`);
         setProduct(response.data);
-        if (response.data.colors.length > 0) {
-          setSelectedColor(response.data.colors[0]);
-        }
+        setSelectedPhotoIdx(0);
       } catch (error) {
         console.error('Error fetching product:', error);
       } finally {
@@ -42,12 +40,12 @@ const ProductDetailPage: React.FC = () => {
   }, [productId]);
 
   const handleAddToCart = () => {
-    if (!product || !selectedColor) return;
+    if (!product) return;
     addToCart({
       productId: product._id,
       modelName: product.modelName,
-      colorName: selectedColor.colorName,
-      colorImage: selectedColor.imageUrl,
+      colorName: '',
+      colorImage: product.colors[selectedPhotoIdx]?.imageUrl || product.colors[0]?.imageUrl || '',
       seriesCount,
       pricePerSeries: product.pricePerSeries * 5,
       totalPrice: product.pricePerSeries * 5 * seriesCount,
@@ -71,12 +69,13 @@ const ProductDetailPage: React.FC = () => {
     );
   }
 
-  const mainImgSrc = selectedColor?.imageUrl ? getImageUrl(selectedColor.imageUrl) : null;
+  const currentPhoto = product.colors[selectedPhotoIdx];
+  const mainImgSrc = currentPhoto?.imageUrl ? getImageUrl(currentPhoto.imageUrl) : null;
 
   return (
     <div style={{ backgroundColor: '#ffffff', minHeight: '60vh' }}>
 
-      {/* Üst: Ana Sayfa butonu */}
+      {/* Üst: Geri butonu */}
       <div style={{ borderBottom: '1px solid #e5e7eb', padding: isMobile ? '12px 16px' : '12px 40px' }}>
         <Link
           to="/"
@@ -98,9 +97,8 @@ const ProductDetailPage: React.FC = () => {
 
         {/* SOL: Görseller */}
         {isMobile ? (
-          /* Mobil: ana görsel + altta yatay kaydırmalı thumbnail şeridi */
           <div style={{ width: '100%', minWidth: 0, overflow: 'hidden' }}>
-            {/* Ana görsel — doğal oran, tam genişlik */}
+            {/* Ana görsel */}
             <div
               style={{ width: '100%', backgroundColor: '#f5f5f5', cursor: mainImgSrc ? 'zoom-in' : 'default', overflow: 'hidden' }}
               onClick={() => mainImgSrc && setLightbox(mainImgSrc)}
@@ -108,37 +106,37 @@ const ProductDetailPage: React.FC = () => {
               {mainImgSrc ? (
                 <img
                   src={mainImgSrc}
-                  alt={selectedColor?.colorName}
+                  alt={product.modelName}
                   style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'contain' }}
                 />
               ) : (
-                <div style={{ width: '100%', paddingTop: '133%', position: 'relative', backgroundColor: '#f5f5f5' }}>
+                <div style={{ width: '100%', paddingTop: '133%', position: 'relative' }}>
                   <span style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '80px', color: '#e5e7eb', fontWeight: '300' }}>
                     {product.modelName.charAt(0)}
                   </span>
                 </div>
               )}
             </div>
-            {/* Thumbnail şeridi — scrollbar gizli, parmakla kaydırılır */}
+            {/* Fotoğraf şeridi — yatay kaydırma, scrollbar gizli */}
             {product.colors.length > 1 && (
               <div
                 className="no-scrollbar"
                 style={{ display: 'flex', gap: '6px', padding: '8px', overflowX: 'auto', backgroundColor: '#fafafa', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
               >
-                {product.colors.map((color, i) => (
+                {product.colors.map((photo, i) => (
                   <button
                     key={i}
-                    onClick={() => setSelectedColor(color)}
+                    onClick={() => setSelectedPhotoIdx(i)}
                     style={{
                       flexShrink: 0, width: '76px', height: '76px', padding: 0, cursor: 'pointer',
                       backgroundColor: '#f0f0f0', overflow: 'hidden', border: 'none',
-                      outline: selectedColor?.colorName === color.colorName ? '2px solid #000' : '2px solid transparent',
+                      outline: selectedPhotoIdx === i ? '2px solid #000' : '2px solid transparent',
                       outlineOffset: '-2px',
                     }}
                   >
-                    {color.imageUrl
-                      ? <img src={getImageUrl(color.imageUrl)} alt={color.colorName} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-                      : <span style={{ fontSize: '20px', color: '#9ca3af' }}>{color.colorName.charAt(0)}</span>
+                    {photo.imageUrl
+                      ? <img src={getImageUrl(photo.imageUrl)} alt={`${product.modelName} ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                      : <span style={{ fontSize: '20px', color: '#9ca3af' }}>{i + 1}</span>
                     }
                   </button>
                 ))}
@@ -146,38 +144,35 @@ const ProductDetailPage: React.FC = () => {
             )}
           </div>
         ) : (
-          /* Desktop: sol ince thumbnail sütunu + sağda büyük görsel */
+          /* Desktop: sol thumbnail sütunu + sağda büyük görsel */
           <div style={{ display: 'flex', gap: '0' }}>
-            {/* Thumbnail sütunu */}
             <div className="no-scrollbar" style={{ width: '90px', flexShrink: 0, borderRight: '1px solid #e5e7eb', padding: '16px 8px', display: 'flex', flexDirection: 'column', gap: '8px', overflowY: 'auto', maxHeight: '80vh', position: 'sticky', top: '64px', alignSelf: 'flex-start' }}>
-              {product.colors.map((color, i) => (
+              {product.colors.map((photo, i) => (
                 <button
                   key={i}
-                  onClick={() => setSelectedColor(color)}
+                  onClick={() => setSelectedPhotoIdx(i)}
                   style={{
                     width: '74px', height: '74px', padding: 0, cursor: 'pointer', flexShrink: 0,
                     backgroundColor: '#f0f0f0', overflow: 'hidden', border: 'none',
-                    outline: selectedColor?.colorName === color.colorName ? '2px solid #000' : '2px solid transparent',
+                    outline: selectedPhotoIdx === i ? '2px solid #000' : '2px solid transparent',
                     outlineOffset: '-2px', transition: 'opacity 0.2s',
                   }}
-                  onMouseOver={(e) => { if (selectedColor?.colorName !== color.colorName) e.currentTarget.style.opacity = '0.7'; }}
+                  onMouseOver={(e) => { if (selectedPhotoIdx !== i) e.currentTarget.style.opacity = '0.7'; }}
                   onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
                 >
-                  {color.imageUrl
-                    ? <img src={getImageUrl(color.imageUrl)} alt={color.colorName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    : <span style={{ fontSize: '20px', color: '#9ca3af' }}>{color.colorName.charAt(0)}</span>
+                  {photo.imageUrl
+                    ? <img src={getImageUrl(photo.imageUrl)} alt={`${product.modelName} ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    : <span style={{ fontSize: '20px', color: '#9ca3af' }}>{i + 1}</span>
                   }
                 </button>
               ))}
             </div>
-
-            {/* Büyük ana görsel */}
             <div
               style={{ flex: 1, aspectRatio: '3/4', backgroundColor: '#f5f5f5', overflow: 'hidden', cursor: mainImgSrc ? 'zoom-in' : 'default' }}
               onClick={() => mainImgSrc && setLightbox(mainImgSrc)}
             >
               {mainImgSrc ? (
-                <img src={mainImgSrc} alt={selectedColor?.colorName} style={{ width: '100%', height: '100%', objectFit: 'contain', transition: 'opacity 0.2s' }} />
+                <img src={mainImgSrc} alt={product.modelName} style={{ width: '100%', height: '100%', objectFit: 'contain', transition: 'opacity 0.2s' }} />
               ) : (
                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <span style={{ fontSize: '120px', color: '#e5e7eb', fontWeight: '300' }}>{product.modelName.charAt(0)}</span>
@@ -193,21 +188,13 @@ const ProductDetailPage: React.FC = () => {
           borderLeft: isMobile ? 'none' : '1px solid #e5e7eb',
           display: 'flex', flexDirection: 'column', gap: '28px',
           minWidth: 0,
-          /* Mobilde sticky buton için alt padding */
           paddingBottom: isMobile ? '96px' : undefined,
         }}>
 
           {/* Model adı */}
-          <div>
-            <h1 style={{ fontSize: isMobile ? '20px' : '26px', fontWeight: '400', letterSpacing: '0.08em', color: '#000000', margin: '0 0 6px 0', textTransform: 'uppercase', wordBreak: 'break-word' }}>
-              {product.modelName}
-            </h1>
-            {selectedColor && (
-              <p style={{ fontSize: '13px', color: '#9ca3af', letterSpacing: '0.05em', margin: 0 }}>
-                {selectedColor.colorName}
-              </p>
-            )}
-          </div>
+          <h1 style={{ fontSize: isMobile ? '20px' : '26px', fontWeight: '400', letterSpacing: '0.08em', color: '#000000', margin: 0, textTransform: 'uppercase', wordBreak: 'break-word' }}>
+            DIFFIN — {product.modelName}
+          </h1>
 
           {/* Stokta Var */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -261,15 +248,13 @@ const ProductDetailPage: React.FC = () => {
           {!isMobile && (
             <button
               onClick={handleAddToCart}
-              disabled={!selectedColor}
               style={{
                 width: '100%', padding: '16px', backgroundColor: '#000000', color: '#ffffff',
                 border: 'none', fontSize: '13px', letterSpacing: '0.15em', fontWeight: '500',
-                cursor: selectedColor ? 'pointer' : 'not-allowed', textTransform: 'uppercase',
-                transition: 'background-color 0.2s', opacity: selectedColor ? 1 : 0.4,
+                cursor: 'pointer', textTransform: 'uppercase', transition: 'background-color 0.2s',
               }}
-              onMouseOver={(e) => { if (selectedColor) e.currentTarget.style.backgroundColor = '#333333'; }}
-              onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#000000'; }}
+              onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#333333'}
+              onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#000000'}
             >
               {t('productDetail.addToCart')}
             </button>
@@ -277,7 +262,7 @@ const ProductDetailPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Sepete ekle — Mobil sticky alt çubuk */}
+      {/* Sepete ekle — Mobil sticky */}
       {isMobile && (
         <div style={{
           position: 'fixed', bottom: 0, left: 0, right: 0,
@@ -286,12 +271,10 @@ const ProductDetailPage: React.FC = () => {
         }}>
           <button
             onClick={handleAddToCart}
-            disabled={!selectedColor}
             style={{
               width: '100%', padding: '14px', backgroundColor: '#000000', color: '#ffffff',
               border: 'none', fontSize: '13px', letterSpacing: '0.12em', fontWeight: '500',
-              cursor: selectedColor ? 'pointer' : 'not-allowed', textTransform: 'uppercase',
-              opacity: selectedColor ? 1 : 0.4,
+              cursor: 'pointer', textTransform: 'uppercase',
             }}
           >
             {t('productDetail.addToCart')}
@@ -303,21 +286,10 @@ const ProductDetailPage: React.FC = () => {
       {lightbox && (
         <div
           onClick={() => setLightbox(null)}
-          style={{
-            position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.92)', zIndex: 1000,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'zoom-out',
-          }}
+          style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.92)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'zoom-out' }}
         >
-          <img
-            src={lightbox}
-            alt=""
-            style={{ maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain' }}
-            onClick={(e) => e.stopPropagation()}
-          />
-          <button
-            onClick={() => setLightbox(null)}
-            style={{ position: 'absolute', top: '20px', right: '24px', background: 'none', border: 'none', color: '#ffffff', fontSize: '32px', cursor: 'pointer', lineHeight: 1 }}
-          >×</button>
+          <img src={lightbox} alt="" style={{ maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain' }} onClick={(e) => e.stopPropagation()} />
+          <button onClick={() => setLightbox(null)} style={{ position: 'absolute', top: '20px', right: '24px', background: 'none', border: 'none', color: '#ffffff', fontSize: '32px', cursor: 'pointer', lineHeight: 1 }}>×</button>
         </div>
       )}
     </div>

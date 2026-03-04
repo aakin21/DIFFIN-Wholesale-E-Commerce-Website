@@ -119,7 +119,6 @@ const CartPage: React.FC = () => {
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                   <div>
                     <h3 style={{ fontSize: '14px', fontWeight: '500', letterSpacing: '0.08em', marginBottom: '6px', textTransform: 'uppercase' }}>{item.modelName}</h3>
-                    <p style={{ fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>{t('cart.color')}: {item.colorName}</p>
                     <p style={{ fontSize: '12px', color: '#6b7280' }}>{t('cart.seriesCount')}: {item.seriesCount}</p>
                   </div>
                   <button

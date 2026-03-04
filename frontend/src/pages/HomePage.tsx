@@ -41,7 +41,7 @@ const HomePage: React.FC = () => {
 
   // Her kategori için random bir ürün ve renk seç (products yüklenince bir kez hesaplanır)
   const categoryRandomItems = useMemo(() => {
-    const map: Record<string, { productId: string; modelName: string; colorName: string; imageUrl: string; pricePerSeries: number } | null> = {};
+    const map: Record<string, { productId: string; modelName: string; imageUrl: string; pricePerSeries: number } | null> = {};
     categories.forEach(category => {
       const categoryProducts = products.filter(product => {
         const id = product.categoryId && typeof product.categoryId === 'object'
@@ -51,13 +51,11 @@ const HomePage: React.FC = () => {
       });
       if (categoryProducts.length === 0) { map[category._id] = null; return; }
       const randomProduct = categoryProducts[Math.floor(Math.random() * categoryProducts.length)];
-      if (randomProduct.colors.length === 0) { map[category._id] = null; return; }
-      const randomColor = randomProduct.colors[Math.floor(Math.random() * randomProduct.colors.length)];
+      const imageUrl = randomProduct.colors[0]?.imageUrl || '';
       map[category._id] = {
         productId: randomProduct._id,
         modelName: randomProduct.modelName,
-        colorName: randomColor.colorName,
-        imageUrl: randomColor.imageUrl,
+        imageUrl,
         pricePerSeries: randomProduct.pricePerSeries,
       };
     });
