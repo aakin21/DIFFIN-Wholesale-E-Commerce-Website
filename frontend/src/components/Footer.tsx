@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 const Footer: React.FC = () => {
@@ -92,7 +93,15 @@ const Footer: React.FC = () => {
               {t('home.contact.workingHours')}
             </p>
           </div>
-          <div style={{ borderTop: '1px solid #2d2d2d', marginTop: '32px', paddingTop: '24px' }}>
+          <div style={{ borderTop: '1px solid #2d2d2d', marginTop: '32px', paddingTop: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+            <Link
+              to="/about"
+              style={{ fontSize: isMobile ? '11px' : '12px', letterSpacing: '0.15em', color: '#b0b0b0', textDecoration: 'none', textTransform: 'uppercase' }}
+              onMouseOver={(e) => e.currentTarget.style.color = '#ffffff'}
+              onMouseOut={(e) => e.currentTarget.style.color = '#b0b0b0'}
+            >
+              {t('header.aboutUs')}
+            </Link>
             <p style={{ fontSize: isMobile ? '11px' : '12px', color: '#6b7280', margin: 0 }}>
               &copy; {new Date().getFullYear()} DIFFIN. {t('home.contact.copyright')}
             </p>
