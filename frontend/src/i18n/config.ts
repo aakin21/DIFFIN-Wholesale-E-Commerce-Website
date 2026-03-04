@@ -132,6 +132,9 @@ const resources = {
         "title": "KEDVENCEIM",
         "empty": "Még nincsenek kedvencek"
       },
+      "footer": {
+        "categories": "KATEGÓRIÁK"
+      },
       "createBrand": {
         "title": "HOZZA LÉTRE MÁRKÁJÁT",
         "subtitle": "Rendeljen nagykereskedelmi termékeinkből, vagy küldje el mintáját. Gyártás, címkézés, csomagolás — mindent mi intézünk.",
@@ -305,6 +308,9 @@ const resources = {
         "title": "FAVORİLERİM",
         "empty": "Henüz favori eklemediniz"
       },
+      "footer": {
+        "categories": "KATEGORILER"
+      },
       "createBrand": {
         "title": "MARKANIZI OLUŞTURALIM",
         "subtitle": "Toptan satış yaptığımız ürünlerden sipariş verin ya da numune gönderin. Üretim, etiket, paket — geri kalan her şeyi biz ayarlıyoruz.",
@@ -458,6 +464,9 @@ const resources = {
       "favorites": {
         "title": "MY FAVORITES",
         "empty": "No favorites yet"
+      },
+      "footer": {
+        "categories": "CATEGORIES"
       },
       "createBrand": {
         "title": "CREATE YOUR BRAND",

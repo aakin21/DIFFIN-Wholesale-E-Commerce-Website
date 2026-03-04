@@ -74,7 +74,7 @@ const ProductsPage: React.FC = () => {
       {/* Kategori başlığı */}
       <div style={{ padding: isMobile ? '24px 16px 16px' : '40px 40px 24px', textAlign: 'center' }}>
         <h1 style={{ fontSize: isMobile ? '18px' : '22px', fontWeight: '300', letterSpacing: '0.2em', color: '#000' }}>
-          {category?.name.toUpperCase() || t('products.title')}
+          {category?.name.toLocaleUpperCase('en-US') || t('products.title')}
         </h1>
       </div>
 
@@ -127,7 +127,7 @@ const ProductsPage: React.FC = () => {
                       DIFFIN — {product.modelName}
                     </p>
                     <p style={{ fontSize: isMobile ? '11px' : '12px', color: '#6b7280', textAlign: 'center' }}>
-                      {product.pricePerSeries.toLocaleString('tr-TR')} ₺ / adet
+                      {product.pricePerSeries.toLocaleString('tr-TR')} ₺ {t('productDetail.perPiece')}
                     </p>
                   </Link>
                 </div>

@@ -67,7 +67,7 @@ const FavoritesPage: React.FC = () => {
                     </button>
                   </div>
                   <p style={{ fontSize: '13px', letterSpacing: '0.06em', color: '#000', marginBottom: '4px', textAlign: 'center' }}>DIFFIN — {item.modelName}</p>
-                  <p style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', textAlign: 'center' }}>{item.pricePerSeries.toLocaleString('tr-TR')} ₺ / adet</p>
+                  <p style={{ fontSize: '12px', color: '#6b7280', marginBottom: '10px', textAlign: 'center' }}>{item.pricePerSeries.toLocaleString('tr-TR')} ₺ {t('productDetail.perPiece')}</p>
                 </Link>
                 <button
                   onClick={(e) => handleAddToCart(item, e)}

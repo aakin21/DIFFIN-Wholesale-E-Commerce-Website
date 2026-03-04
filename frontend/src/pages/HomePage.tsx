@@ -123,7 +123,7 @@ const HomePage: React.FC = () => {
                       </div>
                     ) : (
                       <div style={{ aspectRatio: '3/4', backgroundColor: '#f5f5f5', marginBottom: isMobile ? '12px' : '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <span style={{ fontSize: '32px', color: '#d1d5db', fontWeight: '200' }}>{category.name.charAt(0).toUpperCase()}</span>
+                        <span style={{ fontSize: '32px', color: '#d1d5db', fontWeight: '200' }}>{category.name.charAt(0).toLocaleUpperCase('en-US')}</span>
                       </div>
                     )}
 
@@ -135,9 +135,8 @@ const HomePage: React.FC = () => {
                       color: '#000000',
                       textAlign: 'center',
                       marginBottom: '4px',
-                      textTransform: 'uppercase'
                     }}>
-                      {category.name}
+                      {category.name.toLocaleUpperCase('en-US')}
                     </h3>
 
                     {/* Model ve fiyat */}
@@ -147,7 +146,7 @@ const HomePage: React.FC = () => {
                           DIFFIN — {randomItem.modelName}
                         </p>
                         <p style={{ fontSize: isMobile ? '10px' : '11px', color: '#9ca3af', textAlign: 'center' }}>
-                          {randomItem.pricePerSeries.toLocaleString('tr-TR')} ₺ / adet
+                          {randomItem.pricePerSeries.toLocaleString('tr-TR')} ₺ {t('productDetail.perPiece')}
                         </p>
                       </>
                     )}
